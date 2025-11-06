@@ -1,0 +1,32 @@
+<div class="form__capa">
+    <h2 class="form__heading">Iniciar Sesión</h2>
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Email -->
+        <div class="form__campo">
+            <label for="email">Correo:</label>
+            <input type="email" name="email" id="email" placeholder="ejemplo@email.com" formControlName="email">
+            <app-error-field [control]="email!" fieldName="correo"></app-error-field>
+        </div>
+
+        <!-- Pass -->
+        <div class="form__campo">
+            <label for="pass">Contraseña:</label>
+            <input type="password" name="pass" id="pass" placeholder="********" formControlName="pass">
+            <app-error-field [control]="pass!" fieldName="contraseña"></app-error-field>
+        </div>
+
+        <!-- Btn -->
+        <div class="form__campo">
+            <button type="submit">Iniciar Sesión</button>
+        </div>
+
+        <div class="more-links">
+            <div class="form__campo">
+                <p><a [routerLink]="['/auth/forgot-pass']">¿Has olvidado tu contraseña?</a></p>
+            </div>
+            <div class="form__campo">
+                <p><a [routerLink]="['/auth/register']">¿Todavía no tienes una cuenta? <span>Registrate</span></a></p>
+            </div>
+        </div>
+    </form>
+</div>

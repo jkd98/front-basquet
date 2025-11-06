@@ -1,0 +1,9 @@
+.more-links{
+    display: flex;
+}
+
+.more-links div{
+    padding: 0;
+    padding-inline: 1.6rem;
+}
+

@@ -1,0 +1,5 @@
+<div class="custom-toast"
+    [ngClass]="[customToastService.typeMessage()==='success'?'custom-toast--success':'', customToastService.typeMessage()==='error'?'custom-toast--error':'', customToastService.showToast()?'show-toast':'hidden-toast' ]">
+    <h3>{{customToastService.typeMessage()}}</h3>
+    <p>{{customToastService.message()}}</p>
+</div>

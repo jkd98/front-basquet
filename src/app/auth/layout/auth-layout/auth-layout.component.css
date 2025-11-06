@@ -1,0 +1,86 @@
+.bg {
+    background-image: linear-gradient(to right, rgb(0 0 0 /.7), rgb(0 0 0 /.7)), url(/bg-login.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100dvh;
+    position: relative;
+}
+
+@media(min-width:768px) {
+    .bg {
+        background-image: none;
+    }
+}
+
+.cont {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+}
+
+@media(min-width:768px) {
+    .cont {
+        flex-direction: row;
+        align-items: stretch;
+    }
+}
+
+.welcome-text {
+    display: none;
+}
+
+.welcome-text p {
+    font-size: 2.5rem;
+    text-align: left;
+}
+
+.welcome-text h2 {
+    font-size: 8rem;
+    padding-block-end: 1.6rem;
+    text-align: center;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+
+@media(min-width:768px) {
+    .welcome-text {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding-left: 5%;
+        padding-right: 30%;
+        clip-path: polygon(0% 0%,
+                100% 0%,
+                /* Esquina superior derecha normal */
+                30% 100%,
+                /* Esquina inferior derecha desplazada 5% */
+                0% 100%
+                /* Esquina inferior izquierda normal */
+            );
+
+        background-image: linear-gradient(to right, rgb(0 0 0 /.7), rgb(0 0 0 /.7)), url(/bg-login.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100dvh;
+    }
+
+    .welcome-text h2 {
+        font-size: 6rem;
+    }
+}
+
+@media (min-width:768px) {
+
+    .wf {
+        width: 40%;
+        padding-right: 5%;
+    }
+}

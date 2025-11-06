@@ -1,0 +1,24 @@
+<div class="form__capa">
+
+    <h2 class="form__heading">Solicitar Nueva Contraseña</h2>
+    <form class="form">
+    <!-- Email -->
+    <div class="form__campo">
+        <label for="email">Correo:</label>
+        <input type="email" name="email" id="email" placeholder="Ej. email123@email.com" [formControl]="email">
+        <app-error-field [control]="email!" fieldName="correo"></app-error-field>
+    </div>
+    
+    <!-- Btn -->
+    <div class="btns">
+        <!-- <div class="form__campo">
+            <button type="button" (click)="onCancel()">Cancelar</button>
+        </div> -->
+        <div class="form__campo form__campo-2">
+            <button type="button" (click)="requestNewPass()">Solicitar Nueva Contraseña</button>
+        </div>
+    </div>
+</form>
+
+
+</div>

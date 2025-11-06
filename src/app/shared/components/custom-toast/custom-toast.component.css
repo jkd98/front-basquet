@@ -1,0 +1,56 @@
+.custom-toast {
+    opacity: 0;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    padding: 1rem 3rem;
+    background-color: var(--secondary);
+    border-radius: .6rem;
+    width: 50%;
+}
+
+@media(min-width:768px) {
+    .custom-toast {
+        width: 25%;
+    }
+}
+
+.custom-toast p,
+.custom-toast h3 {
+    color: var(--primary);
+}
+
+
+.custom-toast--error {
+    background-color: var(--red-bg);
+}
+
+.custom-toast--error p,
+.custom-toast--error h3 {
+    color: var(--red);
+}
+
+.custom-toast--success {
+    background-color: var(--green-bg);
+}
+
+.custom-toast--success p,
+.custom-toast--success h3 {
+    color: var(--green);
+}
+
+.hidden-toast {
+    opacity: 0;
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition: 
+    opacity 1s ease-in-out,
+    transform 1s ease-in-out,
+    visibility 1s ease-in-out;
+}
+
+.show-toast {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}

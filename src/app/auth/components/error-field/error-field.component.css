@@ -1,0 +1,12 @@
+.box-error{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: .8rem;
+}
+
+.box-error {
+    text-align: left;
+    width: 100%;
+    font-size: 1.6rem;
+}
