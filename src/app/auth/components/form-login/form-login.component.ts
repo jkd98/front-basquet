@@ -38,7 +38,7 @@ export class FormLoginComponent {
     this.authService.login(this.email?.value!, this.pass?.value!).subscribe((result) => {
       console.log(result);
       if(result){
-        this.#router.navigate(['/auth/2fa'])
+        this.#router.navigate(['/admin/home'])
         this.loginForm.reset();
       }
     })

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { CustomToastService } from '../../shared/services/custom-toast.service';
 
 
-type TAuthStatus = 'checking' | 'authenticated' | 'not-authenticated' | '2FA' | 'invalid-code' | 'register' | 'forgot-pass' | 'new-pass';
+type TAuthStatus = 'checking' | 'authenticated' | 'not-authenticated' | 'invalid-code' | 'register' | 'forgot-pass' | 'new-pass';
 
 type TAuthSuccessData = {
   user?: {
@@ -105,6 +105,34 @@ export class AuthService {
           return of(false)
         })
       );
+  }
+
+  // sendBeacon al detectar el cierre de pestaña
+  sendLogoutBeacon(): void {
+    //Toma estos datos, envíalos, y hazlo tú mismo sin esperarme. No me importa la respuesta.
+    
+    // 1. URL completa de endpoint de logout
+    const logoutUrl = `${baseUrl}/auth/logout`;
+    
+    // 2. Cuerpo de la petición (JSON)
+    const data = new Blob([JSON.stringify({email:this.#user()?.email})], {
+      type: 'application/json; charset=UTF-8'
+    });
+    
+    // 3. sendBeacon
+    /*
+      Este metodo senBeacon le quita el trabajo a código JavaScript (que está a punto de morir) 
+      y se lo delega al navegador, el cual tiene un mecanismo especial 
+      para completar este tipo de "mensajes de emergencia".
+    */
+    // sendBeacon devuelve 'true' si el navegador pudo encolar la petición.
+    const sent = window.navigator.sendBeacon(logoutUrl, data);
+
+    if (sent) {
+      console.log('Logout beacon encolado exitosamente.');
+    } else {
+      console.error('Fallo al encolar el logout beacon.');
+    }
   }
 
   registerUser(nwUser: TNwUser): Observable<boolean> {
