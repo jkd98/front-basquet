@@ -1,0 +1,9 @@
+.bg {
+    background-image: linear-gradient(to right, rgb(0 0 0 /.5), rgb(0 0 0 /.5)), url(/bg-login.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100dvh;
+    position: relative;
+
+}

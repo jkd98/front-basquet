@@ -31,4 +31,8 @@ export class RequestNewPassFormComponent {
     })
   }
 
+  onCancel(){
+    this.#router.navigate(['/auth/login'])
+  }
+
 }
