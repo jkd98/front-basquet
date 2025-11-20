@@ -11,6 +11,11 @@ export const usersRoutes: Routes = [
                 title:'Inicio'
             },
             {
+                path:'register-team',
+                loadComponent: () => import('./pages/register-team-page/register-team-page.component'),
+                title:'Registro de Equipo'
+            },
+            {
                 path:'**',
                 redirectTo:'home',
                 pathMatch:'full'

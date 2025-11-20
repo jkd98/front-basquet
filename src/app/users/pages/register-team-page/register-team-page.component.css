@@ -1,0 +1,448 @@
+.register-container {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--primary) 0%, #1a0535 100%);
+  position: relative;
+}
+
+.content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form__heading {
+  font-family: var(--fuente-heading);
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 3rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .form__heading {
+    font-size: 3.5rem;
+  }
+}
+
+/* Card Styles */
+::ng-deep .custom-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .custom-card .p-card-body {
+  padding: 0;
+}
+
+::ng-deep .custom-card .p-card-content {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  ::ng-deep .custom-card .p-card-content {
+    padding: 2rem;
+  }
+}
+
+.card-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--secondary);
+  font-family: var(--fuente-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .card-title-wrapper {
+    font-size: 1.8rem;
+  }
+}
+
+.card-title-wrapper i {
+  font-size: 1.8rem;
+}
+
+@media (min-width: 768px) {
+  .card-title-wrapper i {
+    font-size: 2rem;
+  }
+}
+
+/* Form Fields */
+.form__campo {
+  margin-bottom: 2rem;
+}
+
+.form__campo label {
+  display: block;
+  margin-bottom: 0.8rem;
+  color: var(--white);
+  font-size: 1.4rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.form__campo label i {
+  color: var(--secondary);
+}
+
+.form__campo input {
+  width: 100%;
+  height: 4.5rem;
+  padding: 0 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.6rem;
+  color: var(--white);
+  font-family: var(--fuente-principal);
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.form__campo input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--secondary);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Player Items */
+.player-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.player-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 480px) {
+  .player-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.player-header h3 {
+  color: var(--white);
+  font-size: 1.6rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.btn-remove {
+  background: rgba(255, 59, 59, 0.1);
+  color: #ff4d4d;
+  border: 1px solid rgba(255, 59, 59, 0.2);
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .btn-remove {
+    width: auto;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.btn-remove:hover {
+  background: rgba(255, 59, 59, 0.2);
+  border-color: #ff4d4d;
+}
+
+/* Buttons */
+.btn-add-player {
+  width: 100%;
+  min-height: 4.5rem;
+  height: auto;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  color: var(--white);
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 1.5rem;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.btn-add-player:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+.form__campo-2 button {
+  width: 100%;
+  min-height: 4.5rem;
+  height: auto;
+  padding: 1.5rem;
+  background: var(--secondary);
+  color: white;
+  border: none;
+  border-radius: 0.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.form__campo-2 button:hover:not(:disabled) {
+  background: #e64a19;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(250, 85, 34, 0.3);
+}
+
+.form__campo-2 button:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+/* Photo Upload Box */
+.photo-upload-box {
+  width: 100%;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.photo-upload-box:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--secondary);
+}
+
+.photo-upload-box.error {
+  border-color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.05);
+}
+
+.photo-upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-upload-box .placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.3s ease;
+}
+
+.photo-upload-box:hover .placeholder {
+  color: var(--secondary);
+}
+
+.photo-upload-box .placeholder i {
+  font-size: 3rem;
+}
+
+.photo-upload-box .placeholder span {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.photo-upload-box .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+}
+
+.photo-upload-box:hover .overlay {
+  opacity: 1;
+}
+
+.photo-upload-box .overlay i {
+  font-size: 2.5rem;
+}
+
+/* Error Messages */
+.error-message {
+  color: #ff4d4d;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.age-display {
+  color: #4caf50;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}
+
+/* Calendar Dropdown Fix */
+::ng-deep .p-datepicker {
+  background: rgba(26, 5, 53, 0.85) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  z-index: 99999 !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-header {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--white) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+::ng-deep .p-datepicker table td {
+  padding: 0.2rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+::ng-deep .p-datepicker table td>span {
+  color: var(--white) !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  border-radius: 50% !important;
+}
+
+::ng-deep .p-datepicker table td>span:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+::ng-deep .p-datepicker table td.p-datepicker-today>span {
+  background: rgba(255, 255, 255, 0.2) !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .p-datepicker table td>span.p-highlight {
+  background: var(--secondary) !important;
+  color: white !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-title .p-datepicker-year,
+::ng-deep .p-datepicker .p-datepicker-title .p-datepicker-month {
+  color: var(--white) !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-prev,
+::ng-deep .p-datepicker .p-datepicker-next {
+  color: var(--white) !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-prev:hover,
+::ng-deep .p-datepicker .p-datepicker-next:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Fix Calendar Input Styling */
+::ng-deep .p-calendar {
+  width: 100%;
+  height: 4.5rem;
+}
+
+::ng-deep .p-calendar .p-inputtext {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  font-family: var(--fuente-principal);
+  font-size: 1.5rem;
+}
+
+::ng-deep .p-calendar .p-inputtext:enabled:focus {
+  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2);
+  border-color: var(--secondary);
+}
+
+::ng-deep .p-calendar .p-datepicker-trigger {
+  height: 100%;
+  border-top-right-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
+  background: var(--secondary);
+  border: 1px solid var(--secondary);
+  color: white;
+}

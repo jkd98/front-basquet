@@ -1,0 +1,261 @@
+<div class="register-container">
+  <app-custom-toast></app-custom-toast>
+  <div class="content-wrapper">
+    <h1 class="form__heading">Registro de Equipo</h1>
+
+    <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class="form">
+
+      <p-card styleClass="custom-card mb-4">
+        <ng-template pTemplate="header">
+          <div class="card-header-bg"></div>
+        </ng-template>
+        <ng-template pTemplate="title">
+          <div class="card-title-wrapper">
+            <i class="pi pi-users"></i>
+            <span>Información del Equipo</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="form__campo">
+            <label for="teamName">
+              Nombre del Equipo *
+            </label>
+            <input type="text" id="teamName" formControlName="teamName" [class.ng-invalid]="isFieldInvalid('teamName')"
+              placeholder="Ingrese el nombre del equipo" />
+            @if (isFieldInvalid('teamName')) {
+            <small class="error-message">{{ getFieldError('teamName') }}</small>
+            }
+          </div>
+
+          <!-- Foto del Equipo -->
+          <div class="form__campo mt-4">
+            <label>
+              <i class="pi pi-image"></i> Foto del Equipo *
+            </label>
+
+            <input type="file" id="teamPhotoInput" (change)="onTeamPhotoSelect($event)" accept="image/*" hidden />
+
+            <div class="photo-upload-box" [class.has-image]="teamPhotoPreview"
+              [class.error]="isFieldInvalid('teamPhoto')" (click)="triggerTeamPhotoInput()">
+              @if (teamPhotoPreview) {
+              <img [src]="teamPhotoPreview" alt="Vista previa" />
+              <div class="overlay">
+                <i class="pi pi-pencil"></i>
+                <span>Cambiar Foto</span>
+              </div>
+              } @else {
+              <div class="placeholder">
+                <i class="pi pi-camera"></i>
+                <span>Añadir Foto</span>
+              </div>
+              }
+            </div>
+
+            @if (isFieldInvalid('teamPhoto')) {
+            <small class="error-message">{{ getFieldError('teamPhoto') }}</small>
+            }
+          </div>
+        </ng-template>
+      </p-card>
+
+      <p-card styleClass="custom-card mb-4">
+        <ng-template pTemplate="title">
+          <div class="card-title-wrapper">
+            <i class="pi pi-star"></i>
+            <span>Información del Capitán</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="form__campo">
+            <label for="captainFullName">
+              <i class="pi pi-user"></i> Nombre Completo *
+            </label>
+            <input type="text" id="captainFullName" formControlName="fullName" [formGroup]="captain"
+              [class.ng-invalid]="isFieldInvalid('fullName', captain)" placeholder="Nombre completo del capitán" />
+            @if (isFieldInvalid('fullName', captain)) {
+            <small class="error-message">{{ getFieldError('fullName', captain) }}</small>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form__campo">
+              <label for="captainBirthDate">
+                <i class="pi pi-calendar"></i> Fecha de Nacimiento *
+              </label>
+              <p-calendar id="captainBirthDate" formControlName="birthDate" [formGroup]="captain"
+                [class.ng-invalid]="isFieldInvalid('birthDate', captain)" dateFormat="dd/mm/yy" [maxDate]="today"
+                placeholder="Seleccione la fecha" [showIcon]="true" styleClass="w-full calendar-input"
+                appendTo="body"></p-calendar>
+              @if (isFieldInvalid('birthDate', captain)) {
+              <small class="error-message">{{ getFieldError('birthDate', captain) }}</small>
+              }
+              @if (captainAge !== null) {
+              <small class="age-display">
+                <i class="pi pi-info-circle"></i> Edad: {{ captainAge }} años
+              </small>
+              }
+            </div>
+
+            <div class="form__campo">
+              <label for="captainJerseyNumber">
+                <i class="pi pi-hashtag"></i> Número de Playera/Dorsal *
+              </label>
+              <p-inputNumber id="captainJerseyNumber" formControlName="jerseyNumber" [formGroup]="captain"
+                [class.ng-invalid]="isFieldInvalid('jerseyNumber', captain)" [min]="1" [max]="99"
+                placeholder="Número de playera" styleClass="w-full number-input"></p-inputNumber>
+              @if (isFieldInvalid('jerseyNumber', captain)) {
+              <small class="error-message">{{ getFieldError('jerseyNumber', captain) }}</small>
+              }
+            </div>
+          </div>
+
+          <!-- Foto del Capitán -->
+          <div class="form__campo mt-4">
+            <label>
+              <i class="pi pi-image"></i> Foto del Capitán *
+            </label>
+
+            <input type="file" id="captainPhotoInput" (change)="onCaptainPhotoSelect($event)" accept="image/*" hidden />
+
+            <div class="photo-upload-box" [class.has-image]="captainPhotoPreview"
+              [class.error]="isFieldInvalid('photo', captain)" (click)="triggerCaptainPhotoInput()">
+              @if (captainPhotoPreview) {
+              <img [src]="captainPhotoPreview" alt="Vista previa" />
+              <div class="overlay">
+                <i class="pi pi-pencil"></i>
+                <span>Cambiar Foto</span>
+              </div>
+              } @else {
+              <div class="placeholder">
+                <i class="pi pi-camera"></i>
+                <span>Añadir Foto</span>
+              </div>
+              }
+            </div>
+
+            @if (isFieldInvalid('photo', captain)) {
+            <small class="error-message">{{ getFieldError('photo', captain) }}</small>
+            }
+          </div>
+        </ng-template>
+      </p-card>
+
+      <p-card styleClass="custom-card mb-4">
+        <ng-template pTemplate="title">
+          <div class="card-title-wrapper">
+            <i class="pi pi-users"></i>
+            <span>Jugadores</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          @if (players.length === 0) {
+          <div class="form__campo">
+            <p class="no-players-message">
+              <i class="pi pi-info-circle"></i> No hay jugadores agregados. Haga clic en "Agregar Jugador" para
+              comenzar.
+            </p>
+          </div>
+          }
+
+          @for (player of players.controls; track $index) {
+          @let playerForm = getPlayerFormGroup($index);
+          <div class="player-item">
+            <div class="player-header">
+              <h3><i class="pi pi-user"></i> Jugador {{ $index + 1 }}</h3>
+              <button type="button" class="btn-remove" (click)="removePlayer($index)">
+                <i class="pi pi-trash"></i> Eliminar
+              </button>
+            </div>
+
+            <div class="form__campo">
+              <label [for]="'playerFullName' + $index">
+                <i class="pi pi-user"></i> Nombre Completo *
+              </label>
+              <input type="text" [id]="'playerFullName' + $index" formControlName="fullName" [formGroup]="playerForm"
+                [class.ng-invalid]="isFieldInvalid('fullName', playerForm)" placeholder="Nombre completo del jugador" />
+              @if (isFieldInvalid('fullName', playerForm)) {
+              <small class="error-message">{{ getFieldError('fullName', playerForm) }}</small>
+              }
+            </div>
+
+            <div class="form-row">
+              <div class="form__campo">
+                <label [for]="'playerBirthDate' + $index">
+                  <i class="pi pi-calendar"></i> Fecha de Nacimiento *
+                </label>
+                <p-calendar [id]="'playerBirthDate' + $index" formControlName="birthDate" [formGroup]="playerForm"
+                  [class.ng-invalid]="isFieldInvalid('birthDate', playerForm)" dateFormat="dd/mm/yy" [maxDate]="today"
+                  placeholder="Seleccione la fecha" [showIcon]="true" styleClass="w-full calendar-input"
+                  appendTo="body"></p-calendar>
+                @if (isFieldInvalid('birthDate', playerForm)) {
+                <small class="error-message">{{ getFieldError('birthDate', playerForm) }}</small>
+                }
+                @if (getPlayerAge($index) !== null) {
+                <small class="age-display">
+                  <i class="pi pi-info-circle"></i> Edad: {{ getPlayerAge($index) }} años
+                </small>
+                }
+              </div>
+
+              <div class="form__campo">
+                <label [for]="'playerJerseyNumber' + $index">
+                  <i class="pi pi-hashtag"></i> Número de Playera/Dorsal *
+                </label>
+                <p-inputNumber [id]="'playerJerseyNumber' + $index" formControlName="jerseyNumber"
+                  [formGroup]="playerForm" [class.ng-invalid]="isFieldInvalid('jerseyNumber', playerForm)" [min]="1"
+                  [max]="99" placeholder="Número de playera" styleClass="w-full number-input"></p-inputNumber>
+                @if (isFieldInvalid('jerseyNumber', playerForm)) {
+                <small class="error-message">{{ getFieldError('jerseyNumber', playerForm) }}</small>
+                }
+              </div>
+            </div>
+
+            <!-- Foto del Jugador -->
+            <div class="form__campo">
+              <label>
+                <i class="pi pi-image"></i> Foto del Jugador *
+              </label>
+
+              <input type="file" [id]="'playerPhotoInput' + $index" (change)="onPlayerPhotoSelect($event, $index)"
+                accept="image/*" hidden />
+
+              <div class="photo-upload-box" [class.has-image]="playerPhotoPreviews[$index]"
+                [class.error]="isFieldInvalid('photo', playerForm)" (click)="triggerPlayerPhotoInput($index)">
+                @if (playerPhotoPreviews[$index]) {
+                <img [src]="playerPhotoPreviews[$index]" alt="Vista previa" />
+                <div class="overlay">
+                  <i class="pi pi-pencil"></i>
+                  <span>Cambiar Foto</span>
+                </div>
+                } @else {
+                <div class="placeholder">
+                  <i class="pi pi-camera"></i>
+                  <span>Añadir Foto</span>
+                </div>
+                }
+              </div>
+
+              @if (isFieldInvalid('photo', playerForm)) {
+              <small class="error-message">{{ getFieldError('photo', playerForm) }}</small>
+              }
+            </div>
+          </div>
+          }
+
+          <div class="form__campo">
+            <button type="button" class="btn-add-player" (click)="addPlayer()">
+              <i class="pi pi-plus"></i> Agregar Jugador
+            </button>
+          </div>
+        </ng-template>
+      </p-card>
+
+      <!-- Botón de Enviar -->
+      <div class="form__campo form__campo-2">
+        <button type="submit" [disabled]="teamForm.invalid">
+          <i class="pi pi-check"></i> Registrar Equipo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
