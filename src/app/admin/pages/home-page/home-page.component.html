@@ -1,1 +1,101 @@
-<p>home-page works!</p>
+<div class="admin-container">
+    <div class="content-wrapper">
+        <!-- Header Section -->
+        <div class="admin-header">
+            <h1 class="admin-title">
+                <i class="pi pi-shield"></i>
+                Panel de Administración
+            </h1>
+            <p class="admin-subtitle">Gestiona tus ligas de basketball</p>
+        </div>
+
+        <!-- Main Action Card -->
+        <div class="action-card">
+            <div class="card-icon">
+                <i class="pi pi-plus-circle"></i>
+            </div>
+            <h2>Crear Nueva Liga</h2>
+            <p>Comienza una nueva temporada creando una liga personalizada</p>
+            <button class="btn-create-league" (click)="openModal()">
+                <i class="pi pi-plus"></i>
+                <span>Crear Liga</span>
+            </button>
+        </div>
+
+        <!-- Future sections placeholder -->
+        <div class="leagues-section">
+            <h3 class="section-title">
+                <i class="pi pi-list"></i>
+                Ligas Activas
+            </h3>
+            <div class="empty-state">
+                <i class="pi pi-inbox"></i>
+                <p>No hay ligas creadas aún</p>
+                <span>Crea tu primera liga para comenzar</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Creating League -->
+<p-dialog class="orange-container" [(visible)]="displayModal" [modal]="true" [closable]="true" [draggable]="false"
+    [resizable]="false" styleClass="league-modal" [style]="{width: '90vw', maxWidth: '500px'}">
+
+    <ng-template pTemplate="header">
+        <div class="modal-header">
+            <i class="pi pi-trophy"></i>
+            <span>Nueva Liga</span>
+        </div>
+    </ng-template>
+
+    <div class="modal-content">
+        <!-- League Name Field -->
+        <div class="form-field">
+            <label for="leagueName">
+                <i class="pi pi-tag"></i>
+                Nombre de la Liga
+            </label>
+            <input type="text" id="leagueName" [(ngModel)]="leagueName" placeholder="Ej: Liga Profesional 2024"
+                class="text-input" />
+        </div>
+
+        <!-- Logo Upload Field -->
+        <div class="form-field">
+            <label>
+                <i class="pi pi-image"></i>
+                Logotipo de la Liga
+            </label>
+            <div class="logo-upload-box" (click)="triggerFileInput()">
+                <input type="file" id="logoInput" accept="image/*" (change)="onFileSelected($event)"
+                    style="display: none;" />
+
+                <div class="upload-content" *ngIf="!logoPreview">
+                    <i class="pi pi-cloud-upload"></i>
+                    <span class="upload-text">Haz clic para subir el logotipo</span>
+                    <span class="upload-hint">PNG, JPG o SVG (máx. 5MB)</span>
+                </div>
+
+                <div class="preview-content" *ngIf="logoPreview">
+                    <img [src]="logoPreview" alt="Logo preview" />
+                    <div class="preview-overlay">
+                        <i class="pi pi-refresh"></i>
+                        <span>Cambiar imagen</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeModal()">
+                <i class="pi pi-times"></i>
+                Cancelar
+            </button>
+            <button class="btn-submit" (click)="createLeague()" [disabled]="!isFormValid()">
+                <i class="pi pi-check"></i>
+                Crear Liga
+            </button>
+        </div>
+    </ng-template>
+</p-dialog>
