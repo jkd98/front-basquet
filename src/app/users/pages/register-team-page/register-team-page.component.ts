@@ -91,6 +91,10 @@ export default class RegisterTeamPageComponent implements OnInit {
         this.invitationError = error.error?.msg || 'Código de invitación inválido o expirado.';
         this.isValidInvitation = false;
         this.isLoading = false;
+        // Redirect to home after 2 seconds
+        setTimeout(() => {
+          this.#router.navigate(['/users/home']);
+        }, 2000);
       }
     });
   }

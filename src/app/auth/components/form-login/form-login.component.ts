@@ -37,8 +37,17 @@ export class FormLoginComponent {
 
     this.authService.login(this.email?.value!, this.pass?.value!).subscribe((result) => {
       console.log(result);
-      if(result){
-        this.#router.navigate(['/admin/home'])
+      if (result) {
+        // Redirect based on user role
+        const userRole = this.authService.getUserRole();
+        if (userRole === '4DMlN') {
+          this.#router.navigate(['/admin/home']);
+        } else if (userRole === 'Coach') {
+          this.#router.navigate(['/users/home']);
+        } else {
+          // Default fallback
+          this.#router.navigate(['/users/home']);
+        }
         this.loginForm.reset();
       }
     })

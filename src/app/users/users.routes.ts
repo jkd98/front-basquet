@@ -1,4 +1,5 @@
 import { Routes } from "@angular/router";
+import { authGuard } from "../shared/guards/auth.guard";
 
 export const usersRoutes: Routes = [
     {
@@ -13,12 +14,14 @@ export const usersRoutes: Routes = [
             {
                 path: 'register-team',
                 loadComponent: () => import('./pages/register-team-page/register-team-page.component'),
-                title: 'Registro de Equipo'
+                title: 'Registro de Equipo',
+                canActivate: [authGuard]
             },
             {
                 path: 'my-team',
                 loadComponent: () => import('./pages/my-team/my-team.component').then(m => m.MyTeamComponent),
-                title: 'Mi Equipo'
+                title: 'Mi Equipo',
+                canActivate: [authGuard]
             },
             {
                 path: '**',
