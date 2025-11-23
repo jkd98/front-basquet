@@ -12,6 +12,7 @@ type TAuthSuccessData = {
   user?: {
     fullname?: string;
     email: string;
+    role?: string;
   }
   tkn?: string
 }
@@ -110,15 +111,15 @@ export class AuthService {
   // sendBeacon al detectar el cierre de pestaña
   sendLogoutBeacon(): void {
     //Toma estos datos, envíalos, y hazlo tú mismo sin esperarme. No me importa la respuesta.
-    
+
     // 1. URL completa de endpoint de logout
     const logoutUrl = `${baseUrl}/auth/logout`;
-    
+
     // 2. Cuerpo de la petición (JSON)
-    const data = new Blob([JSON.stringify({email:this.#user()?.email})], {
+    const data = new Blob([JSON.stringify({ email: this.#user()?.email })], {
       type: 'application/json; charset=UTF-8'
     });
-    
+
     // 3. sendBeacon
     /*
       Este metodo senBeacon le quita el trabajo a código JavaScript (que está a punto de morir) 
@@ -252,6 +253,22 @@ export class AuthService {
   showResponseByToast({ msg, data, status }: any) {
     this.#response.set({ msg, data, status });
     this.#customToastService.renderToast(msg, status);
+  }
+
+  /**
+   * Obtiene el rol del usuario actual
+   * @returns El rol del usuario o null si no está autenticado
+   */
+  getUserRole(): string | null {
+    return this.#user()?.role || null;
+  }
+
+  /**
+   * Verifica si el usuario actual es administrador
+   * @returns true si el usuario tiene rol '4DMlN'
+   */
+  isAdmin(): boolean {
+    return this.getUserRole() === '4DMlN';
   }
 
 }
