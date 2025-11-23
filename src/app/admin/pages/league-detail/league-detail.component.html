@@ -12,7 +12,7 @@
     </div>
 
     <!-- League Detail Content -->
-    <div class="detail-content" *ngIf="!isLoading && league">
+    <div class="detail-content" *ngIf="!isLoading && league && !viewingSeason">
         <!-- Header with Back Button -->
         <div class="detail-header">
             <button class="btn-back" (click)="goBack()">
@@ -81,6 +81,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Season Detail Content -->
+    <app-season-detail *ngIf="viewingSeason" [season]="viewingSeason" (goBack)="closeSeasonDetail()">
+    </app-season-detail>
 </div>
 
 <!-- Modal for Creating Season -->

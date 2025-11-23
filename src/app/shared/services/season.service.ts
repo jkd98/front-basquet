@@ -63,4 +63,11 @@ export class SeasonService {
             { headers: this.getHeaders() }
         );
     }
+
+    getSeasonTeams(id: string): Observable<ApiResponse<any[]>> {
+        return this.http.get<ApiResponse<any[]>>(
+            `${this.baseUrl}/${id}/teams`,
+            { headers: this.getHeaders() }
+        );
+    }
 }

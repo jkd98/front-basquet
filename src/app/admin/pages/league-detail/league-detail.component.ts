@@ -13,6 +13,7 @@ import { CustomToastService } from '../../../shared/services/custom-toast.servic
 import { CustomToastComponent } from '../../../shared/components/custom-toast/custom-toast.component';
 import { League } from '../../../shared/interfaces/league.interface';
 import { Season } from '../../../shared/interfaces/season.interface';
+import { SeasonDetailComponent } from '../season-detail/season-detail.component';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -24,7 +25,8 @@ import { environment } from '../../../../environments/environment';
     MenuModule,
     ConfirmDialogModule,
     CalendarModule,
-    CustomToastComponent
+    CustomToastComponent,
+    SeasonDetailComponent
   ],
   providers: [ConfirmationService],
   templateUrl: './league-detail.component.html',
@@ -40,6 +42,7 @@ export default class LeagueDetailComponent implements OnInit {
   displaySeasonModal: boolean = false;
   displayEditSeasonModal: boolean = false;
   selectedSeason: Season | null = null;
+  viewingSeason: Season | null = null;
 
   // Season form fields
   seasonYear: string = '';
@@ -251,6 +254,11 @@ export default class LeagueDetailComponent implements OnInit {
     });
   }
 
+  closeSeasonDetail() {
+    this.viewingSeason = null;
+    this.loadSeasons(); // Reload to get updates if any
+  }
+
   // Helper Methods
   goBack() {
     this.router.navigate(['/admin/home']);
@@ -296,11 +304,7 @@ export default class LeagueDetailComponent implements OnInit {
         label: 'Ver Temporada',
         icon: 'pi pi-eye',
         command: () => {
-          // TODO: Navigate to season detail
-          this.customToastService.renderToast(
-            'Funcionalidad próximamente',
-            'success'
-          );
+          this.viewingSeason = season;
         }
       },
       {

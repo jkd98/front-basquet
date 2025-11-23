@@ -1,0 +1,198 @@
+<div class="season-detail-container" *ngIf="season">
+    <div class="detail-header">
+        <button class="btn-back" (click)="onBack()">
+            <i class="pi pi-arrow-left"></i>
+            <span>Volver a la Liga</span>
+        </button>
+
+        <div class="header-info">
+            <h1>Temporada {{ season.year }}</h1>
+            <span class="status-badge" [class]="season.status">{{ season.status }}</span>
+        </div>
+    </div>
+
+    <!-- Control Panel Options -->
+    <div class="control-panel-grid" *ngIf="!activeTab">
+        <div class="panel-card" (click)="setActiveTab('teams')">
+            <div class="card-icon">
+                <i class="pi pi-users"></i>
+            </div>
+            <h3>Administrar Equipos</h3>
+            <p>Gestiona los equipos inscritos en esta temporada</p>
+        </div>
+
+        <div class="panel-card" (click)="setActiveTab('invite')">
+            <div class="card-icon">
+                <i class="pi pi-envelope"></i>
+            </div>
+            <h3>Invitar Equipos</h3>
+            <p>Envía invitaciones a equipos para unirse</p>
+        </div>
+
+        <div class="panel-card" (click)="setActiveTab('games')">
+            <div class="card-icon">
+                <i class="pi pi-calendar"></i>
+            </div>
+            <h3>Administrar Juegos/Roles</h3>
+            <p>Organiza el calendario y roles de juego</p>
+        </div>
+    </div>
+
+    <!-- Active Tab Content -->
+    <div class="tab-content" *ngIf="activeTab">
+        <div class="tab-header">
+            <button class="btn-tab-back" (click)="activeTab = null">
+                <i class="pi pi-arrow-left"></i>
+                <span>Volver al Panel</span>
+            </button>
+            <h2 *ngIf="activeTab === 'teams'">Administrar Equipos</h2>
+            <h2 *ngIf="activeTab === 'invite'">Invitar Equipos</h2>
+            <h2 *ngIf="activeTab === 'games'">Administrar Juegos/Roles</h2>
+        </div>
+
+        <div class="tab-body">
+            <div *ngIf="activeTab === 'teams'">
+                <div class="loading-teams" *ngIf="isLoadingTeams">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <p>Cargando equipos...</p>
+                </div>
+
+                <div class="empty-teams" *ngIf="!isLoadingTeams && teams.length === 0">
+                    <i class="pi pi-users"></i>
+                    <p>No hay equipos registrados en esta temporada</p>
+                </div>
+
+                <div class="teams-grid" *ngIf="!isLoadingTeams && teams.length > 0">
+                    <div class="team-card" *ngFor="let team of teams">
+                        <div class="team-card-header">
+                            <img [src]="getLogoUrl(team.logo)" alt="{{ team.name }}" class="team-logo">
+                            <span class="team-status-badge active">Activo</span>
+                        </div>
+                        <div class="team-info">
+                            <h3>{{ team.name }}</h3>
+                            <p class="coach-name">
+                                <i class="pi pi-user"></i>
+                                {{ team.coach?.fullname || 'Sin Coach' }}
+                            </p>
+                            <div class="team-stats">
+                                <span class="stat-item">
+                                    <i class="pi pi-users"></i>
+                                    {{ team.playerCount }} Jugadores
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="activeTab === 'invite'">
+                <div class="invite-header">
+                    <button class="btn-primary" (click)="openInviteModal()">
+                        <i class="pi pi-plus"></i>
+                        Generar Invitación
+                    </button>
+                </div>
+
+                <div class="loading-teams" *ngIf="isLoadingInvitations">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <p>Cargando invitaciones...</p>
+                </div>
+
+                <div class="empty-teams" *ngIf="!isLoadingInvitations && invitations.length === 0">
+                    <i class="pi pi-envelope"></i>
+                    <p>No hay invitaciones generadas</p>
+                </div>
+
+                <div class="invitations-list" *ngIf="!isLoadingInvitations && invitations.length > 0">
+                    <div class="invitation-card" *ngFor="let invite of invitations">
+                        <div class="invite-info">
+                            <span class="invite-code">{{ invite.code }}</span>
+                            <button class="btn-icon-small" (click)="copyLinkFromList(invite.code)"
+                                title="Copiar enlace">
+                                <i class="pi pi-copy"></i>
+                            </button>
+                            <span class="invite-status" [class]="invite.status">{{ invite.status }}</span>
+                        </div>
+                        <div class="invite-details">
+                            <p>Expira: {{ invite.expireAt | date:'medium' }}</p>
+                            <p *ngIf="invite.usedBy">Usado por: {{ invite.usedBy.fullname }}</p>
+                            <p *ngIf="invite.usedAt">Usado el: {{ invite.usedAt | date:'medium' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="activeTab === 'games'">
+                <div class="loading-teams" *ngIf="isLoadingGames">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <p>Cargando juegos...</p>
+                </div>
+
+                <div class="empty-teams" *ngIf="!isLoadingGames && games.length === 0">
+                    <i class="pi pi-calendar"></i>
+                    <p>No hay juegos generados para esta temporada</p>
+                    <button class="btn-primary" (click)="generateGamesForSeason()">
+                        <i class="pi pi-bolt"></i>
+                        Generar Juegos Automáticamente
+                    </button>
+                </div>
+
+                <div class="games-list" *ngIf="!isLoadingGames && games.length > 0">
+                    <div class="game-card" *ngFor="let game of games">
+                        <div class="game-header">
+                            <span class="round-badge">Ronda {{ game.round }}</span>
+                            <span class="status-badge" [class]="game.status">{{ game.status }}</span>
+                        </div>
+                        <div class="game-matchup">
+                            <div class="team">
+                                <img [src]="getLogoUrl(game.teamA?.logo)" alt="{{ game.teamA?.name }}"
+                                    class="team-logo-small">
+                                <span class="team-name">{{ game.teamA?.name }}</span>
+                            </div>
+                            <span class="vs">VS</span>
+                            <div class="team">
+                                <img [src]="getLogoUrl(game.teamB?.logo)" alt="{{ game.teamB?.name }}"
+                                    class="team-logo-small">
+                                <span class="team-name">{{ game.teamB?.name }}</span>
+                            </div>
+                        </div>
+                        <div class="game-info">
+                            <p class="game-date">
+                                <i class="pi pi-calendar"></i>
+                                {{ game.date ? (game.date | date:'medium') : 'Por definir' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Invite Modal -->
+<p-dialog [(visible)]="displayInviteModal" [modal]="true" [style]="{width: '450px'}" header="Generar Invitación"
+    styleClass="custom-modal">
+    <div class="modal-content">
+        <div class="field" *ngIf="!generatedLink">
+            <label for="expireDate">Fecha de Expiración</label>
+            <p-calendar [(ngModel)]="invitationExpireDate" [showTime]="true" [showIcon]="true" inputId="expireDate"
+                appendTo="body"></p-calendar>
+        </div>
+
+        <div class="generated-link-container" *ngIf="generatedLink">
+            <p>Enlace generado:</p>
+            <div class="link-box">
+                <input type="text" [value]="generatedLink" readonly>
+                <button (click)="copyLink()" class="btn-icon">
+                    <i class="pi pi-copy"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button *ngIf="!generatedLink" pButton label="Cancelar" class="p-button-text"
+            (click)="displayInviteModal=false"></button>
+        <button *ngIf="!generatedLink" pButton label="Generar" class="p-button-primary" (click)="generateInvitation()"
+            [disabled]="!invitationExpireDate"></button>
+        <button *ngIf="generatedLink" pButton label="Cerrar" class="p-button-primary"
+            (click)="displayInviteModal=false"></button>
+    </ng-template>
+</p-dialog>
