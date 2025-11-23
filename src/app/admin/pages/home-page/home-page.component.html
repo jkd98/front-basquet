@@ -22,24 +22,50 @@
             </button>
         </div>
 
-        <!-- Future sections placeholder -->
+        <!-- Leagues Section -->
         <div class="leagues-section">
             <h3 class="section-title">
                 <i class="pi pi-list"></i>
-                Ligas Activas
+                Ligas Creadas
             </h3>
-            <div class="empty-state">
+
+            <!-- Empty State -->
+            <div class="empty-state" *ngIf="leagues.length === 0">
                 <i class="pi pi-inbox"></i>
                 <p>No hay ligas creadas aún</p>
                 <span>Crea tu primera liga para comenzar</span>
+            </div>
+
+            <!-- Leagues Grid -->
+            <div class="leagues-grid" *ngIf="leagues.length > 0">
+                <div class="league-card" *ngFor="let league of leagues">
+                    <div class="league-card-header">
+                        <button type="button" class="league-menu-button" (click)="menu.toggle($event)" #menuButton>
+                            <i class="pi pi-ellipsis-v"></i>
+                        </button>
+                        <p-menu #menu [model]="getLeagueMenuItems(league)" [popup]="true" appendTo="body">
+                        </p-menu>
+                    </div>
+                    <img [src]="getLogoUrl(league.logo)" alt="Logo" class="league-logo" />
+                    <div class="league-info">
+                        <h4 class="league-name">{{ league.name }}</h4>
+                        <span class="league-category">{{ league.category }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Custom Toast Component -->
+<app-custom-toast />
+
+<!-- Confirm Dialog -->
+<p-confirmDialog />
+
 <!-- Modal for Creating League -->
-<p-dialog class="orange-container" [(visible)]="displayModal" [modal]="true" [closable]="true" [draggable]="false"
-    [resizable]="false" styleClass="league-modal" [style]="{width: '90vw', maxWidth: '500px'}">
+<p-dialog [(visible)]="displayModal" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false"
+    styleClass="league-modal" [style]="{width: '90vw', maxWidth: '500px'}">
 
     <ng-template pTemplate="header">
         <div class="modal-header">
@@ -57,6 +83,16 @@
             </label>
             <input type="text" id="leagueName" [(ngModel)]="leagueName" placeholder="Ej: Liga Profesional 2024"
                 class="text-input" />
+        </div>
+
+        <!-- League Category Field -->
+        <div class="form-field">
+            <label for="leagueCategory">
+                <i class="pi pi-bookmark"></i>
+                Categoría de la Liga
+            </label>
+            <input type="text" id="leagueCategory" [(ngModel)]="leagueCategory"
+                placeholder="Ej: Profesional, Juvenil, Amateur" class="text-input" />
         </div>
 
         <!-- Logo Upload Field -->
@@ -92,9 +128,82 @@
                 <i class="pi pi-times"></i>
                 Cancelar
             </button>
-            <button class="btn-submit" (click)="createLeague()" [disabled]="!isFormValid()">
+            <button class="btn-submit" (click)="createLeague()" [disabled]="!isFormValid() || isLoading">
                 <i class="pi pi-check"></i>
-                Crear Liga
+                {{ isLoading ? 'Creando...' : 'Crear Liga' }}
+            </button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<!-- Modal for Editing League -->
+<p-dialog [(visible)]="displayEditModal" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false"
+    styleClass="league-modal" [style]="{width: '90vw', maxWidth: '500px'}">
+
+    <ng-template pTemplate="header">
+        <div class="modal-header">
+            <i class="pi pi-pencil"></i>
+            <span>Editar Liga</span>
+        </div>
+    </ng-template>
+
+    <div class="modal-content">
+        <!-- League Name Field -->
+        <div class="form-field">
+            <label for="editLeagueName">
+                <i class="pi pi-tag"></i>
+                Nombre de la Liga
+            </label>
+            <input type="text" id="editLeagueName" [(ngModel)]="editLeagueName" placeholder="Ej: Liga Profesional 2024"
+                class="text-input" />
+        </div>
+
+        <!-- League Category Field -->
+        <div class="form-field">
+            <label for="editLeagueCategory">
+                <i class="pi pi-bookmark"></i>
+                Categoría de la Liga
+            </label>
+            <input type="text" id="editLeagueCategory" [(ngModel)]="editLeagueCategory"
+                placeholder="Ej: Profesional, Juvenil, Amateur" class="text-input" />
+        </div>
+
+        <!-- Logo Upload Field -->
+        <div class="form-field">
+            <label>
+                <i class="pi pi-image"></i>
+                Logotipo de la Liga
+            </label>
+            <div class="logo-upload-box" (click)="triggerEditFileInput()">
+                <input type="file" id="editLogoInput" accept="image/*" (change)="onEditFileSelected($event)"
+                    style="display: none;" />
+
+                <div class="upload-content" *ngIf="!editLogoPreview">
+                    <i class="pi pi-cloud-upload"></i>
+                    <span class="upload-text">Haz clic para subir el logotipo</span>
+                    <span class="upload-hint">PNG, JPG o SVG (máx. 5MB)</span>
+                </div>
+
+                <div class="preview-content" *ngIf="editLogoPreview">
+                    <img [src]="editLogoPreview" alt="Logo preview" />
+                    <div class="preview-overlay">
+                        <i class="pi pi-refresh"></i>
+                        <span>Cambiar imagen</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeEditModal()">
+                <i class="pi pi-times"></i>
+                Cancelar
+            </button>
+            <button class="btn-submit" (click)="updateLeague()" [disabled]="!isEditFormValid() || isLoading">
+                <i class="pi pi-check"></i>
+                {{ isLoading ? 'Actualizando...' : 'Actualizar Liga' }}
             </button>
         </div>
     </ng-template>

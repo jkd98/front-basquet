@@ -1,0 +1,225 @@
+<div class="league-detail-container">
+    <!-- Custom Toast -->
+    <app-custom-toast />
+
+    <!-- Confirm Dialog -->
+    <p-confirmDialog />
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+        <i class="pi pi-spin pi-spinner"></i>
+        <p>Cargando liga...</p>
+    </div>
+
+    <!-- League Detail Content -->
+    <div class="detail-content" *ngIf="!isLoading && league">
+        <!-- Header with Back Button -->
+        <div class="detail-header">
+            <button class="btn-back" (click)="goBack()">
+                <i class="pi pi-arrow-left"></i>
+                <span>Volver</span>
+            </button>
+
+            <div class="league-header-info">
+                <img [src]="getLogoUrl(league.logo)" alt="Logo" class="league-header-logo" />
+                <div class="league-header-text">
+                    <h1 class="league-title">{{ league.name }}</h1>
+                    <span class="league-category-badge">{{ league.category }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Season Card -->
+        <div class="action-card">
+            <div class="card-icon">
+                <i class="pi pi-calendar-plus"></i>
+            </div>
+            <h2>Crear Temporada</h2>
+            <p>Organiza una nueva temporada para esta liga</p>
+            <button class="btn-create-season" (click)="openSeasonModal()">
+                <i class="pi pi-plus"></i>
+                <span>Nueva Temporada</span>
+            </button>
+        </div>
+
+        <!-- Seasons Section -->
+        <div class="seasons-section">
+            <h3 class="section-title">
+                <i class="pi pi-calendar"></i>
+                Temporadas Creadas
+            </h3>
+
+            <!-- Empty State -->
+            <div class="empty-state" *ngIf="seasons.length === 0">
+                <i class="pi pi-inbox"></i>
+                <p>No hay temporadas creadas aún</p>
+                <span>Crea tu primera temporada para comenzar</span>
+            </div>
+
+            <!-- Seasons Grid -->
+            <div class="seasons-grid" *ngIf="seasons.length > 0">
+                <div class="season-card" *ngFor="let season of seasons">
+                    <div class="season-card-header">
+                        <button type="button" class="season-menu-button" (click)="menu.toggle($event)" #menuButton>
+                            <i class="pi pi-ellipsis-v"></i>
+                        </button>
+                        <p-menu #menu [model]="getSeasonMenuItems(season)" [popup]="true" appendTo="body">
+                        </p-menu>
+                    </div>
+                    <div class="season-content">
+                        <span class="season-badge" [ngClass]="getStatusBadgeClass(season.status)">
+                            {{ getStatusLabel(season.status) }}
+                        </span>
+                        <h4 class="season-year">Temporada {{ season.year }}</h4>
+                        <p class="season-dates">
+                            <i class="pi pi-calendar"></i>
+                            {{ season.startDate | date:'dd/MM/yyyy' }}
+                            <span *ngIf="season.endDate"> - {{ season.endDate | date:'dd/MM/yyyy' }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Creating Season -->
+<p-dialog [(visible)]="displaySeasonModal" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false"
+    styleClass="season-modal" [style]="{width: '90vw', maxWidth: '500px'}">
+
+    <ng-template pTemplate="header">
+        <div class="modal-header">
+            <i class="pi pi-calendar-plus"></i>
+            <span>Nueva Temporada</span>
+        </div>
+    </ng-template>
+
+    <div class="modal-content">
+        <!-- Year Field -->
+        <div class="form-field">
+            <label for="seasonYear">
+                <i class="pi pi-hashtag"></i>
+                Año
+            </label>
+            <input type="text" id="seasonYear" [(ngModel)]="seasonYear" placeholder="Ej: 2024" class="text-input" />
+        </div>
+
+        <!-- Start Date Field -->
+        <div class="form-field">
+            <label for="seasonStartDate">
+                <i class="pi pi-calendar"></i>
+                Fecha de Inicio
+            </label>
+            <p-calendar [(ngModel)]="seasonStartDate" dateFormat="dd/mm/yy" [showIcon]="true"
+                placeholder="Selecciona fecha" styleClass="season-calendar"></p-calendar>
+        </div>
+
+        <!-- End Date Field -->
+        <div class="form-field">
+            <label for="seasonEndDate">
+                <i class="pi pi-calendar"></i>
+                Fecha de Fin (Opcional)
+            </label>
+            <p-calendar [(ngModel)]="seasonEndDate" dateFormat="dd/mm/yy" [showIcon]="true"
+                placeholder="Selecciona fecha (opcional)" styleClass="season-calendar"></p-calendar>
+        </div>
+
+        <!-- Status Field -->
+        <div class="form-field">
+            <label for="seasonStatus">
+                <i class="pi pi-info-circle"></i>
+                Estado
+            </label>
+            <select id="seasonStatus" [(ngModel)]="seasonStatus" class="text-input">
+                <option value="upcoming">Próxima</option>
+                <option value="active">Activa</option>
+                <option value="completed">Completada</option>
+                <option value="cancelled">Cancelada</option>
+            </select>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeSeasonModal()">
+                <i class="pi pi-times"></i>
+                Cancelar
+            </button>
+            <button class="btn-submit" (click)="createSeason()" [disabled]="!isSeasonFormValid() || isLoading">
+                <i class="pi pi-check"></i>
+                {{ isLoading ? 'Creando...' : 'Crear Temporada' }}
+            </button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<!-- Modal for Editing Season -->
+<p-dialog [(visible)]="displayEditSeasonModal" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false"
+    styleClass="season-modal" [style]="{width: '90vw', maxWidth: '500px'}">
+
+    <ng-template pTemplate="header">
+        <div class="modal-header">
+            <i class="pi pi-pencil"></i>
+            <span>Editar Temporada</span>
+        </div>
+    </ng-template>
+
+    <div class="modal-content">
+        <!-- Year Field -->
+        <div class="form-field">
+            <label for="editSeasonYear">
+                <i class="pi pi-hashtag"></i>
+                Año
+            </label>
+            <input type="text" id="editSeasonYear" [(ngModel)]="editSeasonYear" placeholder="Ej: 2024"
+                class="text-input" />
+        </div>
+
+        <!-- Start Date Field -->
+        <div class="form-field">
+            <label for="editSeasonStartDate">
+                <i class="pi pi-calendar"></i>
+                Fecha de Inicio
+            </label>
+            <p-calendar [(ngModel)]="editSeasonStartDate" dateFormat="dd/mm/yy" [showIcon]="true"
+                placeholder="Selecciona fecha" styleClass="season-calendar"></p-calendar>
+        </div>
+
+        <!-- End Date Field -->
+        <div class="form-field">
+            <label for="editSeasonEndDate">
+                <i class="pi pi-calendar"></i>
+                Fecha de Fin (Opcional)
+            </label>
+            <p-calendar [(ngModel)]="editSeasonEndDate" dateFormat="dd/mm/yy" [showIcon]="true"
+                placeholder="Selecciona fecha (opcional)" styleClass="season-calendar"></p-calendar>
+        </div>
+
+        <!-- Status Field -->
+        <div class="form-field">
+            <label for="editSeasonStatus">
+                <i class="pi pi-info-circle"></i>
+                Estado
+            </label>
+            <select id="editSeasonStatus" [(ngModel)]="editSeasonStatus" class="text-input">
+                <option value="upcoming">Próxima</option>
+                <option value="active">Activa</option>
+                <option value="completed">Completada</option>
+                <option value="cancelled">Cancelada</option>
+            </select>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="closeEditSeasonModal()">
+                <i class="pi pi-times"></i>
+                Cancelar
+            </button>
+            <button class="btn-submit" (click)="updateSeason()" [disabled]="!isEditSeasonFormValid() || isLoading">
+                <i class="pi pi-check"></i>
+                {{ isLoading ? 'Actualizando...' : 'Actualizar Temporada' }}
+            </button>
+        </div>
+    </ng-template>
+</p-dialog>
