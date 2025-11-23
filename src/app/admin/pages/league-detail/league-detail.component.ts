@@ -289,6 +289,7 @@ export default class LeagueDetailComponent implements OnInit {
     return labels[status] || status;
   }
 
+  // funciona
   getSeasonMenuItems(season: Season): MenuItem[] {
     return [
       {
