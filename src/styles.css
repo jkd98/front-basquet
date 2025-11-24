@@ -23,7 +23,6 @@
 html {
     font-size: 62.5%;
     box-sizing: border-box;
-    background-color: #FFF;
 }
 
 *,
@@ -202,7 +201,7 @@ img {
         background-color: var(--primary);
     }
 
-    .form__campo-2 button:hover{
+    .form__campo-2 button:hover {
         color: var(--primary);
     }
 

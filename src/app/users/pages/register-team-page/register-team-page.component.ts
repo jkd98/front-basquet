@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -10,6 +11,9 @@ import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
 import { CustomToastComponent } from '../../../shared/components/custom-toast/custom-toast.component';
 import { CustomToastService } from '../../../shared/services/custom-toast.service';
+import { InvitationService } from '../../../shared/services/invitation.service';
+import { TeamService } from '../../../shared/services/team.service';
+import { AuthService } from '../../../auth/services/auth.service';
 
 interface Player {
   fullName: string;
@@ -36,17 +40,25 @@ interface Player {
   templateUrl: './register-team-page.component.html',
   styleUrl: './register-team-page.component.css'
 })
-export default class RegisterTeamPageComponent {
+export default class RegisterTeamPageComponent implements OnInit {
   #fb = inject(FormBuilder);
   #customToastService = inject(CustomToastService);
+  #route = inject(ActivatedRoute);
+  #router = inject(Router);
+  #invitationService = inject(InvitationService);
+  #teamService = inject(TeamService);
+  #authService = inject(AuthService);
 
   today = new Date();
-
-  // Regex para permitir solo letras y espacios
   namePattern = /^[a-zA-Z\s]*$/;
+  invitationCode: string | null = null;
+  isValidInvitation: boolean = false;
+  isLoading: boolean = true;
+  invitationError: string = '';
 
   teamForm = this.#fb.group({
     teamName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+    availabilityDays: [[]],
     captain: this.#fb.group({
       fullName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       birthDate: [null as Date | null, [Validators.required]],
@@ -61,33 +73,54 @@ export default class RegisterTeamPageComponent {
   captainPhotoPreview: string | null = null;
   playerPhotoPreviews: string[] = [];
 
-  get teamName() {
-    return this.teamForm.get('teamName');
+  ngOnInit() {
+    this.invitationCode = this.#route.snapshot.queryParamMap.get('code');
+    if (!this.invitationCode) {
+      this.invitationError = 'No se proporcionó un código de invitación.';
+      this.isLoading = false;
+      this.#customToastService.renderToast('Código de invitación requerido', 'error');
+      setTimeout(() => {
+        this.redirectBasedOnRole();
+      }, 2000);
+      return;
+    }
+    this.validateInvitation(this.invitationCode);
   }
 
-  get captain() {
-    return this.teamForm.get('captain') as FormGroup;
+  validateInvitation(code: string) {
+    this.#invitationService.validateInvitation(code).subscribe({
+      next: (response) => {
+        this.isValidInvitation = true;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.invitationError = error.error?.msg || 'Código de invitación inválido o expirado.';
+        this.isValidInvitation = false;
+        this.isLoading = false;
+        this.#customToastService.renderToast(this.invitationError, 'error');
+        setTimeout(() => {
+          this.redirectBasedOnRole();
+        }, 2000);
+      }
+    });
   }
 
-  get players() {
-    return this.teamForm.get('players') as FormArray;
+  redirectBasedOnRole() {
+    const userRole = this.#authService.getUserRole();
+    if (userRole === '4DMlN') {
+      this.#router.navigate(['/admin/home']);
+    } else {
+      this.#router.navigate(['/users/home']);
+    }
   }
 
-  get teamPhoto() {
-    return this.teamForm.get('teamPhoto');
-  }
-
-  get captainFullName() {
-    return this.captain.get('fullName');
-  }
-
-  get captainBirthDate() {
-    return this.captain.get('birthDate');
-  }
-
-  get captainJerseyNumber() {
-    return this.captain.get('jerseyNumber');
-  }
+  get teamName() { return this.teamForm.get('teamName'); }
+  get captain() { return this.teamForm.get('captain') as FormGroup; }
+  get players() { return this.teamForm.get('players') as FormArray; }
+  get teamPhoto() { return this.teamForm.get('teamPhoto'); }
+  get captainFullName() { return this.captain.get('fullName'); }
+  get captainBirthDate() { return this.captain.get('birthDate'); }
+  get captainJerseyNumber() { return this.captain.get('jerseyNumber'); }
 
   get captainAge(): number | null {
     const birthDate = this.captainBirthDate?.value;
@@ -116,6 +149,10 @@ export default class RegisterTeamPageComponent {
   }
 
   addPlayer() {
+    if (this.players.length >= 12) {
+      this.#customToastService.renderToast('Máximo 12 jugadores adicionales permitidos.', 'warning');
+      return;
+    }
     const playerForm = this.#fb.group({
       fullName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       birthDate: [null as Date | null, [Validators.required]],
@@ -123,7 +160,7 @@ export default class RegisterTeamPageComponent {
       photo: [null as File | null, [Validators.required]]
     });
     this.players.push(playerForm);
-    this.playerPhotoPreviews.push(''); // Placeholder para el preview
+    this.playerPhotoPreviews.push('');
   }
 
   removePlayer(index: number) {
@@ -136,24 +173,24 @@ export default class RegisterTeamPageComponent {
     if (file) {
       this.teamForm.patchValue({ teamPhoto: file });
       this.teamForm.get('teamPhoto')?.updateValueAndValidity();
-
-      // Crear preview
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.teamPhotoPreview = e.target.result;
-      };
+      reader.onload = (e: any) => { this.teamPhotoPreview = e.target.result; };
       reader.readAsDataURL(file);
     }
   }
 
   onPlayerPhotoSelect(event: any, index: number) {
-    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
+    const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.#customToastService.renderToast('Por favor seleccione una imagen válida', 'error');
+        return;
+      }
+
       const playerForm = this.players.at(index) as FormGroup;
       playerForm.patchValue({ photo: file });
       playerForm.get('photo')?.updateValueAndValidity();
 
-      // Crear preview
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.playerPhotoPreviews[index] = e.target.result;
@@ -163,12 +200,16 @@ export default class RegisterTeamPageComponent {
   }
 
   onTeamPhotoSelect(event: any) {
-    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
+    const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.#customToastService.renderToast('Por favor seleccione una imagen válida', 'error');
+        return;
+      }
+
       this.teamForm.patchValue({ teamPhoto: file });
       this.teamForm.get('teamPhoto')?.updateValueAndValidity();
 
-      // Crear preview
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.teamPhotoPreview = e.target.result;
@@ -178,12 +219,16 @@ export default class RegisterTeamPageComponent {
   }
 
   onCaptainPhotoSelect(event: any) {
-    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
+    const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.#customToastService.renderToast('Por favor seleccione una imagen válida', 'error');
+        return;
+      }
+
       this.captain.patchValue({ photo: file });
       this.captain.get('photo')?.updateValueAndValidity();
 
-      // Crear preview
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.captainPhotoPreview = e.target.result;
@@ -193,60 +238,140 @@ export default class RegisterTeamPageComponent {
   }
 
   triggerTeamPhotoInput() {
-    const fileInput = document.getElementById('teamPhotoInput') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
-    }
+    document.getElementById('teamPhotoInput')?.click();
   }
 
   triggerCaptainPhotoInput() {
-    const fileInput = document.getElementById('captainPhotoInput') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
-    }
+    document.getElementById('captainPhotoInput')?.click();
   }
 
   triggerPlayerPhotoInput(index: number) {
-    const fileInput = document.getElementById('playerPhotoInput' + index) as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
-    }
+    document.getElementById('playerPhotoInput' + index)?.click();
+  }
+
+  /**
+   * Mark all fields as touched to show validation errors
+   */
+  markAllFieldsAsTouched(formGroup: FormGroup | FormArray) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.markAllFieldsAsTouched(control);
+      } else {
+        control?.markAsTouched();
+      }
+    });
   }
 
   onSubmit() {
+    // Mark all fields as touched to show validation errors
+    this.markAllFieldsAsTouched(this.teamForm);
+
     if (this.teamForm.invalid) {
-      this.teamForm.markAllAsTouched();
+      console.log('Form errors:', this.teamForm.errors);
+      console.log('Form invalid fields:');
+      this.logFormErrors(this.teamForm);
+
       this.#customToastService.renderToast('Por favor complete todos los campos requeridos correctamente.', 'error');
       return;
     }
 
-    const formValue = this.teamForm.value;
-    console.log('Formulario enviado:', formValue);
+    if (!this.invitationCode || !this.isValidInvitation) {
+      this.#customToastService.renderToast('Código de invitación no válido', 'error');
+      return;
+    }
 
-    this.#customToastService.renderToast('Equipo registrado correctamente', 'success');
+    this.submitFormData();
+  }
 
-    // Aquí puedes agregar la lógica para enviar los datos al backend
-    // Por ejemplo:
-    // this.teamService.registerTeam(formValue).subscribe(...)
+  /**
+   * Helper method to debug form errors
+   */
+  private logFormErrors(formGroup: FormGroup | FormArray, path: string = '') {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.logFormErrors(control, path + key + '.');
+      } else if (control?.errors) {
+        console.log(path + key, control.errors);
+      }
+    });
+  }
+
+  private submitFormData() {
+    const formData = this.prepareFormData();
+
+    this.#teamService.createTeam(formData).subscribe({
+      next: (response) => {
+        this.#customToastService.renderToast('Equipo registrado exitosamente!', 'success');
+        this.redirectBasedOnRole();
+      },
+      error: (error) => {
+        console.error('Error al registrar equipo:', error);
+        this.#customToastService.renderToast(
+          error.error?.msg || 'Error al registrar el equipo',
+          'error'
+        );
+      }
+    });
+  }
+
+  private prepareFormData(): FormData {
+    const formData = new FormData();
+
+    // Add basic team info
+    formData.append('name', this.teamForm.get('teamName')?.value || '');
+    formData.append('availabilityDays', JSON.stringify(this.teamForm.get('availabilityDays')?.value || ['Monday', 'Wednesday']));
+    formData.append('code', this.invitationCode!);
+
+    // Add team photo
+    const teamPhoto = this.teamForm.get('teamPhoto')?.value;
+    if (teamPhoto) {
+      formData.append('logo', teamPhoto);
+    }
+
+    // Prepare players array including captain
+    const playersData = [];
+
+    // Add captain as first player
+    const captainData = this.captain.value;
+    playersData.push({
+      fullname: captainData.fullName,
+      birthday: captainData.birthDate,
+      jersey: captainData.jerseyNumber,
+      picture: '',
+      isLider: true
+    });
+
+    // Add other players
+    this.players.controls.forEach((control) => {
+      const val = control.value;
+      playersData.push({
+        fullname: val.fullName,
+        birthday: val.birthDate,
+        jersey: val.jerseyNumber,
+        picture: '',
+        isLider: false
+      });
+    });
+
+    // Append players data as JSON
+    formData.append('players', JSON.stringify(playersData));
+
+    return formData;
   }
 
   isFieldInvalid(fieldName: string, formGroup?: FormGroup): boolean {
     const control = formGroup ? formGroup.get(fieldName) : this.teamForm.get(fieldName);
-    return !!(control && control.invalid && control.touched);
+    return !!(control && control.invalid && (control.touched || control.dirty));
   }
 
   getFieldError(fieldName: string, formGroup?: FormGroup): string {
     const control = formGroup ? formGroup.get(fieldName) : this.teamForm.get(fieldName);
-    if (control && control.errors && control.touched) {
-      if (control.errors['required']) {
-        return 'Este campo es obligatorio';
-      }
-      if (control.errors['min']) {
-        return 'El valor mínimo es 1';
-      }
-      if (control.errors['pattern']) {
-        return 'Solo se permiten letras y espacios';
-      }
+    if (control && control.errors && (control.touched || control.dirty)) {
+      if (control.errors['required']) return 'Este campo es obligatorio';
+      if (control.errors['min']) return 'El valor mínimo es 1';
+      if (control.errors['pattern']) return 'Solo se permiten letras y espacios';
     }
     return '';
   }

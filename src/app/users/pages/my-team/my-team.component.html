@@ -1,0 +1,41 @@
+<div class="my-team-container">
+    <div class="loading-container" *ngIf="isLoading">
+        <i class="pi pi-spin pi-spinner"></i>
+        <p>Cargando tu equipo...</p>
+    </div>
+
+    <div class="no-team-container" *ngIf="!isLoading && !team">
+        <i class="pi pi-info-circle"></i>
+        <h2>No tienes un equipo registrado</h2>
+        <p>Si tienes un código de invitación, puedes registrar tu equipo.</p>
+        <button pButton label="Registrar Equipo" routerLink="/users/register-team"></button>
+    </div>
+
+    <div class="team-details" *ngIf="!isLoading && team">
+        <div class="team-header">
+            <div class="team-logo-wrapper">
+                <img [src]="getLogoUrl(team.logo)" alt="{{ team.name }}" class="team-logo">
+            </div>
+            <div class="team-info">
+                <h1>{{ team.name }}</h1>
+                <span class="status-badge">Activo</span>
+            </div>
+        </div>
+
+        <div class="players-section">
+            <h2>Jugadores</h2>
+            <div class="players-grid">
+                <div class="player-card" *ngFor="let player of players">
+                    <div class="player-avatar">
+                        <i class="pi pi-user"></i>
+                    </div>
+                    <div class="player-info">
+                        <h3>{{ player.fullname }}</h3>
+                        <p class="jersey">#{{ player.jersey }}</p>
+                        <p class="role" *ngIf="player.isLider">Capitán</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
