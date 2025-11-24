@@ -42,6 +42,9 @@ export class SeasonDetailComponent {
     // Games Tab
     games: any[] = [];
     isLoadingGames: boolean = false;
+    displayDateModal: boolean = false;
+    selectedGame: any = null;
+    selectedGameDate: Date | null = null;
 
     onBack() {
         this.goBack.emit();
@@ -171,6 +174,30 @@ export class SeasonDetailComponent {
                 console.error('Error generating games', error);
                 this.customToastService.renderToast(error.error?.msg || 'Error al generar los juegos', 'error');
                 this.isLoadingGames = false;
+            }
+        });
+    }
+
+    openDateModal(game: any) {
+        this.selectedGame = game;
+        this.selectedGameDate = game.date ? new Date(game.date) : null;
+        this.displayDateModal = true;
+    }
+
+    assignDateToGame() {
+        if (!this.selectedGame || !this.selectedGameDate) return;
+
+        this.gameService.updateGameDate(this.selectedGame._id, this.selectedGameDate).subscribe({
+            next: (response) => {
+                this.customToastService.renderToast('Fecha asignada correctamente', 'success');
+                this.displayDateModal = false;
+                this.selectedGame = null;
+                this.selectedGameDate = null;
+                this.loadGames();
+            },
+            error: (error) => {
+                console.error('Error assigning date', error);
+                this.customToastService.renderToast(error.error?.msg || 'Error al asignar la fecha', 'error');
             }
         });
     }

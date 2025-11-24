@@ -136,10 +136,16 @@
                 </div>
 
                 <div class="games-list" *ngIf="!isLoadingGames && games.length > 0">
-                    <div class="game-card" *ngFor="let game of games">
+                    <div class="game-card" *ngFor="let game of games" [class.clickable]="!game.date"
+                        (click)="!game.date && openDateModal(game)">
                         <div class="game-header">
                             <span class="round-badge">Ronda {{ game.round }}</span>
-                            <span class="status-badge" [class]="game.status">{{ game.status }}</span>
+                            <span class="status-badge" [ngClass]="game.status">
+                                {{ game.status === 'pending' ? 'Pendiente' :
+                                game.status === 'scheduled' ? 'Programado' :
+                                game.status === 'played' ? 'Jugado' :
+                                'Cancelado' }}
+                            </span>
                         </div>
                         <div class="game-matchup">
                             <div class="team">
@@ -159,6 +165,11 @@
                                 <i class="pi pi-calendar"></i>
                                 {{ game.date ? (game.date | date:'medium') : 'Por definir' }}
                             </p>
+                            <button *ngIf="!game.date" class="btn-assign-date"
+                                (click)="openDateModal(game); $event.stopPropagation()">
+                                <i class="pi pi-clock"></i>
+                                Asignar Fecha
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -194,5 +205,26 @@
             [disabled]="!invitationExpireDate"></button>
         <button *ngIf="generatedLink" pButton label="Cerrar" class="p-button-primary"
             (click)="displayInviteModal=false"></button>
+    </ng-template>
+</p-dialog>
+
+<!-- Date Assignment Modal -->
+<p-dialog [(visible)]="displayDateModal" [modal]="true" [style]="{width: '450px'}" header="Asignar Fecha al Partido"
+    styleClass="custom-modal">
+    <div class="modal-content" *ngIf="selectedGame">
+        <div class="selected-game-info">
+            <h3>{{ selectedGame.teamA?.name }} vs {{ selectedGame.teamB?.name }}</h3>
+            <span class="round-badge">Ronda {{ selectedGame.round }}</span>
+        </div>
+        <div class="field">
+            <label for="gameDate">Fecha y Hora del Partido</label>
+            <p-calendar [(ngModel)]="selectedGameDate" [showTime]="true" [showIcon]="true" inputId="gameDate"
+                appendTo="body" dateFormat="dd/mm/yy" placeholder="Selecciona fecha y hora">
+            </p-calendar>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton label="Asignar Fecha" class="btn-assign-date" (click)="assignDateToGame()"
+            [disabled]="!selectedGameDate">Asignar Fecha</button>
     </ng-template>
 </p-dialog>

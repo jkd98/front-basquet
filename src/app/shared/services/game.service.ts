@@ -32,4 +32,12 @@ export class GameService {
             { headers: this.getHeaders() }
         );
     }
+
+    updateGameDate(gameId: string, date: Date): Observable<ApiResponse<any>> {
+        return this.http.put<ApiResponse<any>>(
+            `${this.baseUrl}/${gameId}/date`,
+            { date: date.toISOString() },
+            { headers: this.getHeaders() }
+        );
+    }
 }
