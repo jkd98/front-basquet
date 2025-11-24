@@ -60,11 +60,6 @@ export class NavBarComponent implements OnInit {
           routerLink: '/users/my-team'
         },
         {
-          label: 'Registrar Equipo',
-          icon: 'pi pi-plus',
-          routerLink: '/users/register-team'
-        },
-        {
           label: 'Cerrar Sesión',
           icon: 'pi pi-sign-out',
           command: () => this.logout(),
