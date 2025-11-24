@@ -8,7 +8,7 @@ import { ApiResponse } from '../interfaces/league.interface';
     providedIn: 'root'
 })
 export class TeamService {
-    private baseUrl = `${environment.baseUrl}/teams`;
+    private baseUrl = `${environment.baseUrl}/team`;
     private http = inject(HttpClient);
 
     private getHeaders(): HttpHeaders {
@@ -35,7 +35,7 @@ export class TeamService {
 
     getTeamsByUser(): Observable<ApiResponse<any[]>> {
         return this.http.get<ApiResponse<any[]>>(
-            `${this.baseUrl}/my-teams`,
+            `${this.baseUrl}/by-user`,
             { headers: this.getHeaders() }
         );
     }

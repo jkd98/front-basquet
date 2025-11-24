@@ -8,7 +8,7 @@ import { ApiResponse } from '../interfaces/league.interface';
     providedIn: 'root'
 })
 export class PlayerService {
-    private baseUrl = `${environment.baseUrl}/players`;
+    private baseUrl = `${environment.baseUrl}/player`;
     private http = inject(HttpClient);
 
     private getHeaders(): HttpHeaders {

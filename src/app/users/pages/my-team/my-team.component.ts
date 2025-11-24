@@ -231,6 +231,6 @@ export class MyTeamComponent implements OnInit {
 
   getLogoUrl(logoPath: string): string {
     if (!logoPath) return 'assets/images/default-team-logo.png';
-    return `${this.baseUrl}/uploads/${logoPath}`;
+    return `${this.baseUrl}/public/uploads/${logoPath}`;
   }
 }

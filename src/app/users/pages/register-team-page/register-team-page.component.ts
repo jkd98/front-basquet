@@ -13,6 +13,7 @@ import { CustomToastComponent } from '../../../shared/components/custom-toast/cu
 import { CustomToastService } from '../../../shared/services/custom-toast.service';
 import { InvitationService } from '../../../shared/services/invitation.service';
 import { TeamService } from '../../../shared/services/team.service';
+import { AuthService } from '../../../auth/services/auth.service';
 
 interface Player {
   fullName: string;
@@ -46,6 +47,7 @@ export default class RegisterTeamPageComponent implements OnInit {
   #router = inject(Router);
   #invitationService = inject(InvitationService);
   #teamService = inject(TeamService);
+  #authService = inject(AuthService);
 
   today = new Date();
   namePattern = /^[a-zA-Z\s]*$/;
@@ -56,12 +58,12 @@ export default class RegisterTeamPageComponent implements OnInit {
 
   teamForm = this.#fb.group({
     teamName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
-    availabilityDays: [[], [Validators.required]], // Changed to array for multiple selection if needed, or string
+    availabilityDays: [[]],
     captain: this.#fb.group({
       fullName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       birthDate: [null as Date | null, [Validators.required]],
       jerseyNumber: [null as number | null, [Validators.required, Validators.min(1)]],
-      photo: [null as File | null, []] // Photo optional for now or required?
+      photo: [null as File | null, [Validators.required]]
     }),
     players: this.#fb.array<FormGroup>([]),
     teamPhoto: [null as File | null, [Validators.required]]
@@ -76,6 +78,10 @@ export default class RegisterTeamPageComponent implements OnInit {
     if (!this.invitationCode) {
       this.invitationError = 'No se proporcionó un código de invitación.';
       this.isLoading = false;
+      this.#customToastService.renderToast('Código de invitación requerido', 'error');
+      setTimeout(() => {
+        this.redirectBasedOnRole();
+      }, 2000);
       return;
     }
     this.validateInvitation(this.invitationCode);
@@ -91,12 +97,21 @@ export default class RegisterTeamPageComponent implements OnInit {
         this.invitationError = error.error?.msg || 'Código de invitación inválido o expirado.';
         this.isValidInvitation = false;
         this.isLoading = false;
-        // Redirect to home after 2 seconds
+        this.#customToastService.renderToast(this.invitationError, 'error');
         setTimeout(() => {
-          this.#router.navigate(['/users/home']);
+          this.redirectBasedOnRole();
         }, 2000);
       }
     });
+  }
+
+  redirectBasedOnRole() {
+    const userRole = this.#authService.getUserRole();
+    if (userRole === '4DMlN') {
+      this.#router.navigate(['/admin/home']);
+    } else {
+      this.#router.navigate(['/users/home']);
+    }
   }
 
   get teamName() { return this.teamForm.get('teamName'); }
@@ -142,7 +157,7 @@ export default class RegisterTeamPageComponent implements OnInit {
       fullName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       birthDate: [null as Date | null, [Validators.required]],
       jerseyNumber: [null as number | null, [Validators.required, Validators.min(1)]],
-      photo: [null as File | null, []]
+      photo: [null as File | null, [Validators.required]]
     });
     this.players.push(playerForm);
     this.playerPhotoPreviews.push('');
@@ -165,106 +180,195 @@ export default class RegisterTeamPageComponent implements OnInit {
   }
 
   onPlayerPhotoSelect(event: any, index: number) {
-    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
+    const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.#customToastService.renderToast('Por favor seleccione una imagen válida', 'error');
+        return;
+      }
+
       const playerForm = this.players.at(index) as FormGroup;
       playerForm.patchValue({ photo: file });
       playerForm.get('photo')?.updateValueAndValidity();
+
       const reader = new FileReader();
-      reader.onload = (e: any) => { this.playerPhotoPreviews[index] = e.target.result; };
+      reader.onload = (e: any) => {
+        this.playerPhotoPreviews[index] = e.target.result;
+      };
       reader.readAsDataURL(file);
     }
   }
 
   onTeamPhotoSelect(event: any) {
-    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
+    const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.#customToastService.renderToast('Por favor seleccione una imagen válida', 'error');
+        return;
+      }
+
       this.teamForm.patchValue({ teamPhoto: file });
       this.teamForm.get('teamPhoto')?.updateValueAndValidity();
+
       const reader = new FileReader();
-      reader.onload = (e: any) => { this.teamPhotoPreview = e.target.result; };
+      reader.onload = (e: any) => {
+        this.teamPhotoPreview = e.target.result;
+      };
       reader.readAsDataURL(file);
     }
   }
 
   onCaptainPhotoSelect(event: any) {
-    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
+    const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.#customToastService.renderToast('Por favor seleccione una imagen válida', 'error');
+        return;
+      }
+
       this.captain.patchValue({ photo: file });
       this.captain.get('photo')?.updateValueAndValidity();
+
       const reader = new FileReader();
-      reader.onload = (e: any) => { this.captainPhotoPreview = e.target.result; };
+      reader.onload = (e: any) => {
+        this.captainPhotoPreview = e.target.result;
+      };
       reader.readAsDataURL(file);
     }
   }
 
-  triggerTeamPhotoInput() { document.getElementById('teamPhotoInput')?.click(); }
-  triggerCaptainPhotoInput() { document.getElementById('captainPhotoInput')?.click(); }
-  triggerPlayerPhotoInput(index: number) { document.getElementById('playerPhotoInput' + index)?.click(); }
+  triggerTeamPhotoInput() {
+    document.getElementById('teamPhotoInput')?.click();
+  }
+
+  triggerCaptainPhotoInput() {
+    document.getElementById('captainPhotoInput')?.click();
+  }
+
+  triggerPlayerPhotoInput(index: number) {
+    document.getElementById('playerPhotoInput' + index)?.click();
+  }
+
+  /**
+   * Mark all fields as touched to show validation errors
+   */
+  markAllFieldsAsTouched(formGroup: FormGroup | FormArray) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.markAllFieldsAsTouched(control);
+      } else {
+        control?.markAsTouched();
+      }
+    });
+  }
 
   onSubmit() {
+    // Mark all fields as touched to show validation errors
+    this.markAllFieldsAsTouched(this.teamForm);
+
     if (this.teamForm.invalid) {
-      this.teamForm.markAllAsTouched();
+      console.log('Form errors:', this.teamForm.errors);
+      console.log('Form invalid fields:');
+      this.logFormErrors(this.teamForm);
+
       this.#customToastService.renderToast('Por favor complete todos los campos requeridos correctamente.', 'error');
       return;
     }
 
-    if (!this.invitationCode) return;
+    if (!this.invitationCode || !this.isValidInvitation) {
+      this.#customToastService.renderToast('Código de invitación no válido', 'error');
+      return;
+    }
 
+    this.submitFormData();
+  }
+
+  /**
+   * Helper method to debug form errors
+   */
+  private logFormErrors(formGroup: FormGroup | FormArray, path: string = '') {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.logFormErrors(control, path + key + '.');
+      } else if (control?.errors) {
+        console.log(path + key, control.errors);
+      }
+    });
+  }
+
+  private submitFormData() {
+    const formData = this.prepareFormData();
+
+    this.#teamService.createTeam(formData).subscribe({
+      next: (response) => {
+        this.#customToastService.renderToast('Equipo registrado exitosamente!', 'success');
+        this.redirectBasedOnRole();
+      },
+      error: (error) => {
+        console.error('Error al registrar equipo:', error);
+        this.#customToastService.renderToast(
+          error.error?.msg || 'Error al registrar el equipo',
+          'error'
+        );
+      }
+    });
+  }
+
+  private prepareFormData(): FormData {
     const formData = new FormData();
-    formData.append('name', this.teamForm.get('teamName')?.value || '');
-    // Assuming availabilityDays is handled. For now hardcoding or taking from form if exists.
-    // The previous form didn't have availabilityDays input in HTML? I should check HTML.
-    // Adding a default for now or assuming it's in the form.
-    formData.append('availabilityDays', JSON.stringify(['Monday', 'Wednesday'])); // Placeholder
-    formData.append('code', this.invitationCode);
 
+    // Add basic team info
+    formData.append('name', this.teamForm.get('teamName')?.value || '');
+    formData.append('availabilityDays', JSON.stringify(this.teamForm.get('availabilityDays')?.value || ['Monday', 'Wednesday']));
+    formData.append('code', this.invitationCode!);
+
+    // Add team photo
     const teamPhoto = this.teamForm.get('teamPhoto')?.value;
-    if (teamPhoto) formData.append('logo', teamPhoto);
+    if (teamPhoto) {
+      formData.append('logo', teamPhoto);
+    }
 
     // Prepare players array including captain
     const playersData = [];
 
-    // Captain as a player (or handled separately? The prompt says "add up to 12 players (full team of 13 including coach)". 
-    // Usually coach is NOT a player, but maybe "captain" is the coach-player? 
-    // The prompt says "coach can register his team... add up to 12 players". 
-    // Let's assume the "captain" field in form is actually the "Coach" details if he plays, or just the first player.
-    // But the backend `createTeam` uses `req.usuario` as the coach. 
-    // So the "captain" in the form is likely just the first player (or the coach himself if he plays).
-    // I will add the captain to the players list.
-
+    // Add captain as first player
     const captainData = this.captain.value;
     playersData.push({
       fullname: captainData.fullName,
       birthday: captainData.birthDate,
       jersey: captainData.jerseyNumber,
-      isLider: true, // Captain is leader
-      // Photo? Backend Player model has 'picture'. I need to handle file upload for players.
-      // Backend createTeam expects 'players' as JSON. It doesn't seem to handle multiple files for players yet.
-      // The current backend implementation only handles 'logo' file.
-      // I will skip player photos for now or I need to update backend to handle multiple files.
-      // Given complexity, I will send player data without photos for now or just basic data.
+      picture: '',
+      isLider: true
     });
 
+    // Add other players
     this.players.controls.forEach((control) => {
       const val = control.value;
       playersData.push({
         fullname: val.fullName,
         birthday: val.birthDate,
         jersey: val.jerseyNumber,
+        picture: '',
         isLider: false
       });
     });
+
+    // Append players data as JSON
+    formData.append('players', JSON.stringify(playersData));
+
+    return formData;
   }
 
   isFieldInvalid(fieldName: string, formGroup?: FormGroup): boolean {
     const control = formGroup ? formGroup.get(fieldName) : this.teamForm.get(fieldName);
-    return !!(control && control.invalid && control.touched);
+    return !!(control && control.invalid && (control.touched || control.dirty));
   }
 
   getFieldError(fieldName: string, formGroup?: FormGroup): string {
     const control = formGroup ? formGroup.get(fieldName) : this.teamForm.get(fieldName);
-    if (control && control.errors && control.touched) {
+    if (control && control.errors && (control.touched || control.dirty)) {
       if (control.errors['required']) return 'Este campo es obligatorio';
       if (control.errors['min']) return 'El valor mínimo es 1';
       if (control.errors['pattern']) return 'Solo se permiten letras y espacios';
