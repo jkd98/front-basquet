@@ -374,6 +374,10 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.invite-info span {
+    font-size: 2rem;
+}
+
 .invite-code {
     font-family: monospace;
     font-size: 1.4rem;
@@ -408,7 +412,7 @@
 .invite-details p {
     margin: 0.5rem 0;
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
+    font-size: 1.5rem;
 }
 
 .generated-link-container {
@@ -552,6 +556,8 @@
     border-radius: 0.4rem;
     cursor: pointer;
     display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
 }
 

@@ -138,9 +138,8 @@ export class SeasonDetailComponent {
     }
 
     copyLinkFromList(code: string) {
-        const link = `${window.location.origin}/users/register-team?code=${code}`;
-        navigator.clipboard.writeText(link).then(() => {
-            this.customToastService.renderToast('Enlace copiado al portapapeles', 'success');
+        navigator.clipboard.writeText(code).then(() => {
+            this.customToastService.renderToast('Código copiado al portapapeles', 'success');
         });
     }
 

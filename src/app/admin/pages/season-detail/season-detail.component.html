@@ -107,15 +107,12 @@
                         <div class="invite-info">
                             <span class="invite-code">{{ invite.code }}</span>
                             <button class="btn-icon-small" (click)="copyLinkFromList(invite.code)"
-                                title="Copiar enlace">
+                                title="Copiar código">
                                 <i class="pi pi-copy"></i>
                             </button>
-                            <span class="invite-status" [class]="invite.status">{{ invite.status }}</span>
                         </div>
                         <div class="invite-details">
                             <p>Expira: {{ invite.expireAt | date:'medium' }}</p>
-                            <p *ngIf="invite.usedBy">Usado por: {{ invite.usedBy.fullname }}</p>
-                            <p *ngIf="invite.usedAt">Usado el: {{ invite.usedAt | date:'medium' }}</p>
                         </div>
                     </div>
                 </div>

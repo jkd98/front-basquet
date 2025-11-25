@@ -1,6 +1,6 @@
 .custom-toast {
     opacity: 0;
-    position: absolute;
+    position: fixed;
     top: 2rem;
     right: 2rem;
     padding: 1rem 3rem;
