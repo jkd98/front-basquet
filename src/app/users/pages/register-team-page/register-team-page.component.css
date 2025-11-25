@@ -1,97 +1,203 @@
+/* CONTENEDOR PRINCIPAL */
 .register-container {
   min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, var(--primary) 0%, #1a0535 100%);
-  position: relative;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.06) 0, transparent 55%),
+    linear-gradient(135deg, var(--primary) 0%, #1a0535 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 1100px;
 }
 
+/* CARD PRINCIPAL DEL WIZARD */
+.wizard-card {
+  background: rgba(6, 2, 22, 0.96);
+  border-radius: 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.7);
+  padding: 2.4rem;
+}
+
+@media (min-width: 900px) {
+  .wizard-card {
+    padding: 3rem 3.2rem;
+  }
+}
+
+/* HEADER */
 .form__heading {
   font-family: var(--fuente-heading);
   color: var(--white);
-  text-align: center;
-  margin-bottom: 3rem;
-  font-size: 3rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: 0.03em;
 }
 
 @media (min-width: 768px) {
   .form__heading {
-    font-size: 3.5rem;
+    font-size: 2.8rem;
   }
 }
 
-/* Card Styles */
+.wizard-subtitle {
+  margin-top: 0.6rem;
+  margin-bottom: 1.6rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.4rem;
+}
+
+.wizard-header-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.team-header-grid {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) auto;
+  gap: 1.4rem;
+  align-items: flex-end;
+}
+
+.team-name-field {
+  max-width: 50rem;
+}
+
+.team-logo-field {
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+@media (max-width: 768px) {
+  .team-header-grid {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .team-logo-field {
+    justify-self: flex-start;
+    align-items: flex-start;
+  }
+}
+
+.team-logo-field .placeholder i {
+  font-size: 2.4rem;
+}
+
+.team-logo-field .placeholder span {
+  font-size: 1.2rem;
+}
+
+.team-logo-field .placeholder small {
+  font-size: 1rem;
+}
+
+/* FORM WIZARD */
+.wizard-form {
+  margin-top: 2.4rem;
+}
+
+.step-1-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+}
+
+@media (min-width: 920px) {
+  .step-1-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.step-2-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 960px) {
+  .step-2-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD PRIMENG */
 ::ng-deep .custom-card {
-  background: rgba(255, 255, 255, 0.05) !important;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 55%),
+    rgba(18, 4, 42, 0.96) !important;
+  border-radius: 1.2rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45) !important;
 }
 
 ::ng-deep .custom-card .p-card-body {
-  padding: 0;
+  padding: 0 !important;
 }
 
 ::ng-deep .custom-card .p-card-content {
-  padding: 1.5rem;
+  padding: 1.6rem 1.8rem 1.8rem !important;
 }
 
-@media (min-width: 768px) {
-  ::ng-deep .custom-card .p-card-content {
-    padding: 2rem;
-  }
-}
-
+/* TÍTULO CARD */
 .card-title-wrapper {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1.5rem 2rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 0.9rem;
+  padding: 1.1rem 1.8rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--secondary);
   font-family: var(--fuente-heading);
-  font-size: 1.6rem;
-  font-weight: 600;
-}
-
-@media (min-width: 768px) {
-  .card-title-wrapper {
-    font-size: 1.8rem;
-  }
+  font-size: 1.5rem;
 }
 
 .card-title-wrapper i {
   font-size: 1.8rem;
 }
 
-@media (min-width: 768px) {
-  .card-title-wrapper i {
-    font-size: 2rem;
-  }
+/* CAMPOS GENERALES */
+.form__campo {
+  margin-bottom: 1.6rem;
 }
 
-/* Form Fields */
-.form__campo {
-  margin-bottom: 2rem;
+.form__campo:last-child {
+  margin-bottom: 0;
+}
+
+.label-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form__campo label {
-  display: block;
-  margin-bottom: 0.8rem;
-  color: var(--white);
-  font-size: 1.4rem;
-  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  margin-bottom: 0.6rem;
+  color: var(--white);
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 .form__campo label i {
@@ -100,177 +206,128 @@
 
 .form__campo input {
   width: 100%;
-  height: 4.5rem;
-  padding: 0 1.5rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.6rem;
+  height: 4.2rem;
+  padding: 0 1.3rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.7rem;
   color: var(--white);
   font-family: var(--fuente-principal);
-  font-size: 1.5rem;
-  transition: all 0.3s ease;
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
 }
 
 .form__campo input:focus {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
   border-color: var(--secondary);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2);
+  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.3);
 }
 
+.form__campo input.ng-invalid.ng-touched {
+  border-color: #ff4d4d;
+}
+
+/* FILAS DOBLES */
 .form-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 1.4rem;
+}
+
+.captain-fields-row,
+.player-fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  align-items: stretch;
+}
+
+.captain-fields-column,
+.player-fields-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.captain-photo-column .photo-upload-box,
+.player-photo-column .photo-upload-box {
+  height: 100%;
+  min-height: 190px;
+}
+
+.player-form-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.4rem;
+}
+
+.player-captain-toggle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+  .captain-fields-row,
+  .player-fields-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.square-photo-box {
+  aspect-ratio: 1 / 1;
+  max-width: 20rem;
+  justify-self: flex-end;
+}
+
+.date-input {
+  width: 100%;
+  height: 4.2rem;
+  padding: 0 1.3rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+  font-size: 1.4rem;
+  font-family: var(--fuente-principal);
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 
 @media (min-width: 768px) {
   .form-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Player Items */
-.player-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.8rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-.player-header {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@media (min-width: 480px) {
-  .player-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-.player-header h3 {
-  color: var(--white);
-  font-size: 1.6rem;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.btn-remove {
-  background: rgba(255, 59, 59, 0.1);
-  color: #ff4d4d;
-  border: 1px solid rgba(255, 59, 59, 0.2);
-  padding: 0.8rem 1.2rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 1.3rem;
-  width: 100%;
-}
-
-@media (min-width: 480px) {
-  .btn-remove {
-    width: auto;
-    padding: 0.5rem 1rem;
-  }
-}
-
-.btn-remove:hover {
-  background: rgba(255, 59, 59, 0.2);
-  border-color: #ff4d4d;
-}
-
-/* Buttons */
-.btn-add-player {
-  width: 100%;
-  min-height: 4.5rem;
-  height: auto;
-  padding: 1.2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px dashed rgba(255, 255, 255, 0.3);
-  color: var(--white);
-  border-radius: 0.6rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  font-size: 1.5rem;
-  white-space: normal;
-  text-align: center;
-  line-height: 1.2;
-}
-
-.btn-add-player:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--secondary);
-  color: var(--secondary);
-}
-
-.form__campo-2 button {
-  width: 100%;
-  min-height: 4.5rem;
-  height: auto;
-  padding: 1.5rem;
-  background: var(--secondary);
-  color: white;
-  border: none;
-  border-radius: 0.6rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  white-space: normal;
-  text-align: center;
-  line-height: 1.2;
-}
-
-.form__campo-2 button:hover:not(:disabled) {
-  background: #e64a19;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(250, 85, 34, 0.3);
-}
-
-.form__campo-2 button:disabled {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.3);
-  cursor: not-allowed;
-}
-
-/* Photo Upload Box */
+/* UPLOAD FOTO GENÉRICO */
 .photo-upload-box {
   width: 100%;
-  height: 200px;
+  height: 190px;
   background: rgba(255, 255, 255, 0.05);
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  border-radius: 0.8rem;
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 0.9rem;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+}
+
+.team-logo-field .photo-upload-box--compact {
+  width: 110px;
+  height: 110px;
+  max-width: 110px;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.photo-upload-box.has-image {
+  border-style: solid;
 }
 
 .photo-upload-box:hover {
@@ -280,7 +337,7 @@
 
 .photo-upload-box.error {
   border-color: #ff4d4d;
-  background: rgba(255, 77, 77, 0.05);
+  background: rgba(255, 77, 77, 0.08);
 }
 
 .photo-upload-box img {
@@ -293,13 +350,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  color: rgba(255, 255, 255, 0.6);
-  transition: color 0.3s ease;
-}
-
-.photo-upload-box:hover .placeholder {
-  color: var(--secondary);
+  gap: 0.6rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .photo-upload-box .placeholder i {
@@ -307,22 +359,31 @@
 }
 
 .photo-upload-box .placeholder span {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 500;
+}
+
+.photo-upload-box .placeholder small {
+  font-size: 1.1rem;
+  opacity: 0.8;
 }
 
 .photo-upload-box .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7),
+    rgba(12, 0, 32, 0.9)
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.6rem;
   opacity: 0;
-  transition: opacity 0.3s ease;
   color: white;
+  transition: opacity 0.25s ease;
 }
 
 .photo-upload-box:hover .overlay {
@@ -333,116 +394,364 @@
   font-size: 2.5rem;
 }
 
-/* Error Messages */
+/* ERRORES / EDAD */
 .error-message {
+  margin-top: 0.4rem;
   color: #ff4d4d;
   font-size: 1.2rem;
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
 }
 
 .age-display {
+  margin-top: 0.4rem;
   color: #4caf50;
   font-size: 1.2rem;
-  margin-top: 0.5rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.mb-4 {
-  margin-bottom: 2rem;
+/* BOTONES GENERALES */
+.wizard-step-actions {
+  margin-top: 2.2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.2rem;
+  flex-wrap: wrap;
 }
 
-.mt-4 {
-  margin-top: 2rem;
+.btn-primary,
+.btn-secondary,
+.btn-primary-outline,
+.btn-secondary-outline,
+.btn-danger-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border-radius: 0.8rem;
+  padding: 1.1rem 1.8rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.22s ease;
+  white-space: nowrap;
 }
 
-/* Calendar Dropdown Fix */
-::ng-deep .p-datepicker {
-  background: rgba(26, 5, 53, 0.85) !important;
-  backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-  z-index: 99999 !important;
+.btn-primary {
+  background: linear-gradient(135deg, var(--secondary), #e64a19);
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(250, 85, 34, 0.45);
 }
 
-::ng-deep .p-datepicker .p-datepicker-header {
-  background: rgba(255, 255, 255, 0.05) !important;
-  color: var(--white) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px rgba(250, 85, 34, 0.6);
 }
 
-::ng-deep .p-datepicker table td {
-  padding: 0.2rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
-::ng-deep .p-datepicker table td>span {
-  color: var(--white) !important;
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  border-radius: 50% !important;
-}
-
-::ng-deep .p-datepicker table td>span:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-::ng-deep .p-datepicker table td.p-datepicker-today>span {
-  background: rgba(255, 255, 255, 0.2) !important;
-  font-weight: bold !important;
-}
-
-::ng-deep .p-datepicker table td>span.p-highlight {
-  background: var(--secondary) !important;
-  color: white !important;
-}
-
-::ng-deep .p-datepicker .p-datepicker-title .p-datepicker-year,
-::ng-deep .p-datepicker .p-datepicker-title .p-datepicker-month {
-  color: var(--white) !important;
-}
-
-::ng-deep .p-datepicker .p-datepicker-prev,
-::ng-deep .p-datepicker .p-datepicker-next {
-  color: var(--white) !important;
-}
-
-::ng-deep .p-datepicker .p-datepicker-prev:hover,
-::ng-deep .p-datepicker .p-datepicker-next:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Fix Calendar Input Styling */
-::ng-deep .p-calendar {
-  width: 100%;
-  height: 4.5rem;
-}
-
-::ng-deep .p-calendar .p-inputtext {
-  width: 100%;
-  height: 100%;
-  border-radius: 0.6rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   color: var(--white);
-  font-family: var(--fuente-principal);
-  font-size: 1.5rem;
 }
 
-::ng-deep .p-calendar .p-inputtext:enabled:focus {
-  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2);
-  border-color: var(--secondary);
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
-::ng-deep .p-calendar .p-datepicker-trigger {
-  height: 100%;
-  border-top-right-radius: 0.6rem;
-  border-bottom-right-radius: 0.6rem;
-  background: var(--secondary);
+.btn-primary-outline {
+  background: transparent;
   border: 1px solid var(--secondary);
-  color: white;
+  color: var(--secondary);
+}
+
+.btn-primary-outline:hover {
+  background: rgba(250, 85, 34, 0.1);
+}
+
+.btn-secondary-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--white);
+}
+
+.btn-secondary-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-danger-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 77, 77, 0.8);
+  color: #ff7777;
+}
+
+.btn-danger-outline:hover {
+  background: rgba(255, 77, 77, 0.12);
+}
+
+/* PASO 2: PANEL DE JUGADORES */
+.players-card {
+  height: 100%;
+}
+
+.players-form-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.empty-player-form {
+  text-align: center;
+  padding: 1.4rem 0.4rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.players-form-actions {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+/* LISTA DERECHA */
+.players-list-panel {
+  background: rgba(10, 3, 26, 0.95);
+  border-radius: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 1.6rem 1.6rem 1.4rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  max-height: 440px;
+}
+
+.players-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.players-list-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-family: var(--fuente-heading);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.players-list-header h2 i {
+  color: var(--secondary);
+}
+
+.players-count {
+  font-size: 1.3rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Scroll interno solo para la lista */
+.players-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.players-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.players-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.players-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+}
+
+/* Mensaje vacío */
+.players-empty {
+  text-align: center;
+  padding: 2.4rem 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.players-empty i {
+  font-size: 2.4rem;
+  opacity: 0.8;
+}
+
+.players-empty small {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* ITEM DE JUGADOR EN LISTA */
+.player-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0.8rem;
+  border-radius: 0.8rem;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.player-list-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.player-list-item.selected {
+  background: rgba(250, 85, 34, 0.16);
+  border-color: rgba(250, 85, 34, 0.9);
+  box-shadow: 0 0 0 1px rgba(250, 85, 34, 0.35);
+}
+
+.player-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-fallback {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.player-main-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-name-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.2rem;
+}
+
+.player-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--white);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-jersey {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.player-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.player-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.player-delete-btn {
+  border: none;
+  background: transparent;
+  color: rgba(255, 77, 77, 0.8);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+
+.player-delete-btn:hover {
+  background: rgba(255, 77, 77, 0.12);
+}
+
+/* AYUDA */
+.players-helper {
+  margin-top: 0.8rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ESTADO FORM */
+.form-status {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+::ng-deep .number-input .p-inputnumber-input {
+  width: 100%;
+  height: 4.2rem;
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--white);
+  font-size: 1.4rem;
+}
+
+.player-list-item.captain {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 1px rgba(250, 85, 34, 0.6);
+}
+
+.player-captain-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(250, 85, 34, 0.18);
+  color: var(--secondary);
+  font-size: 1.1rem;
+}
+
+.captain-radio input {
+  transform: scale(1.05);
+  margin-right: 0.35rem;
 }

@@ -12,6 +12,7 @@ import { CustomToastService } from '../../../shared/services/custom-toast.servic
 import { CustomToastComponent } from '../../../shared/components/custom-toast/custom-toast.component';
 import { League } from '../../../shared/interfaces/league.interface';
 import { environment } from '../../../../environments/environment';
+import { LeagueModalComponent } from '../../components/league-modal/league-modal.component';
 
 @Component({
   imports: [
@@ -21,22 +22,16 @@ import { environment } from '../../../../environments/environment';
     ButtonModule,
     MenuModule,
     ConfirmDialogModule,
-    CustomToastComponent
+    CustomToastComponent,
+    LeagueModalComponent
   ],
   providers: [ConfirmationService],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
 export default class HomePageComponent implements OnInit {
-  // Create modal
   displayModal: boolean = false;
-  leagueName: string = '';
-  leagueCategory: string = '';
-  leagueLogo: File | null = null;
-  logoPreview: string | null = null;
-  isLoading: boolean = false;
 
-  // Edit modal
   displayEditModal: boolean = false;
   selectedLeague: League | null = null;
   editLeagueName: string = '';
@@ -44,7 +39,8 @@ export default class HomePageComponent implements OnInit {
   editLeagueLogo: File | null = null;
   editLogoPreview: string | null = null;
 
-  // Leagues list
+  isLoading: boolean = false;
+
   leagues: League[] = [];
 
   private leagueService = inject(LeagueService);
@@ -71,84 +67,17 @@ export default class HomePageComponent implements OnInit {
     });
   }
 
-  // Create League Methods
   openModal() {
     this.displayModal = true;
   }
 
-  closeModal() {
-    this.displayModal = false;
-    this.resetForm();
-  }
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.leagueLogo = file;
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.logoPreview = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  triggerFileInput() {
-    const fileInput = document.getElementById('logoInput') as HTMLInputElement;
-    fileInput?.click();
-  }
-
-  createLeague() {
-    if (!this.isFormValid()) return;
-
-    this.isLoading = true;
-    const formData = new FormData();
-    formData.append('name', this.leagueName);
-    formData.append('category', this.leagueCategory);
-    if (this.leagueLogo) {
-      formData.append('logo', this.leagueLogo);
-    }
-
-    this.leagueService.createLeague(formData).subscribe({
-      next: (response) => {
-        this.customToastService.renderToast(
-          response.msg || 'Liga creada correctamente',
-          'success'
-        );
-        this.closeModal();
-        this.loadLeagues(); // Recargar lista
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error al crear liga:', error);
-        this.customToastService.renderToast(
-          error.error?.msg || 'Error al crear la liga',
-          'error'
-        );
-        this.isLoading = false;
-      }
-    });
-  }
-
-  resetForm() {
-    this.leagueName = '';
-    this.leagueCategory = '';
-    this.leagueLogo = null;
-    this.logoPreview = null;
-  }
-
-  isFormValid(): boolean {
-    return this.leagueName.trim() !== '' &&
-      this.leagueCategory.trim() !== '' &&
-      this.leagueLogo !== null;
-  }
-
-  // Edit League Methods
   openEditModal(league: League) {
     this.selectedLeague = league;
     this.editLeagueName = league.name;
     this.editLeagueCategory = league.category;
-    this.editLogoPreview = league.logo ? `http://localhost:4000/public/uploads/${league.logo}` : null;
+    this.editLogoPreview = league.logo
+      ? `${environment.baseUrl}/public/uploads/${league.logo}`
+      : null;
     this.editLeagueLogo = null;
     this.displayEditModal = true;
   }
@@ -216,11 +145,12 @@ export default class HomePageComponent implements OnInit {
   }
 
   isEditFormValid(): boolean {
-    return this.editLeagueName.trim() !== '' &&
-      this.editLeagueCategory.trim() !== '';
+    return (
+      this.editLeagueName.trim() !== '' &&
+      this.editLeagueCategory.trim() !== ''
+    );
   }
 
-  // Delete League Methods
   confirmDeleteLeague(league: League) {
     this.confirmationService.confirm({
       message: `¿Estás seguro de que quieres eliminar la liga "${league.name}"?`,
@@ -254,12 +184,10 @@ export default class HomePageComponent implements OnInit {
     });
   }
 
-  // Navigation
   navigateToLeagueDetail(leagueId: string) {
     this.router.navigate(['/admin/league', leagueId]);
   }
 
-  // Menu items for each league
   getLeagueMenuItems(league: League): MenuItem[] {
     return [
       {
