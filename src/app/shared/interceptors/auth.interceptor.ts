@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { catchError, Subscriber, throwError } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
 
-
+// se suben interceptor
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
     const authservice = inject(AuthService);
