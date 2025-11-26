@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { League, ApiResponse } from '../interfaces/league.interface';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,12 +15,15 @@ export class LeagueService {
     /**
      * Obtiene el token JWT del sessionStorage
      */
-    private getAuthHeaders(): HttpHeaders {
-        const token = window.sessionStorage.getItem('_jwt');
-        return new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
-    }
+    private authservice = inject(AuthService);
+        
+    
+        private getAuthHeaders(): HttpHeaders {
+             const token = this.authservice.token();
+            return new HttpHeaders({
+                'Authorization': `Bearer ${token}`
+            });
+        }
 
     /**
      * Crea una nueva liga
