@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Season } from '../interfaces/season.interface';
 import { ApiResponse } from '../interfaces/league.interface';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,8 +13,10 @@ export class SeasonService {
     private baseUrl = `${environment.baseUrl}/season`;
     private http = inject(HttpClient);
 
+    private authservice = inject(AuthService);
+
     private getHeaders(): HttpHeaders {
-        const token = sessionStorage.getItem('_jwt');
+        const token = this.authservice.token();
         return new HttpHeaders({
             'Authorization': `Bearer ${token}`
         });

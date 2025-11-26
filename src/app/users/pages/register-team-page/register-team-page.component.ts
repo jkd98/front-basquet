@@ -96,28 +96,10 @@ export default class RegisterTeamPageComponent implements OnInit {
       }, 2000);
       return;
     }
-    this.validateInvitation(this.invitationCode);
+    
   }
 
-  validateInvitation(code: string) {
-    this.#invitationService.validateInvitation(code).subscribe({
-      next: () => {
-        this.isValidInvitation = true;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.invitationError =
-          error.error?.msg || 'Código de invitación inválido o expirado.';
-        this.isValidInvitation = false;
-        this.isLoading = false;
-        this.#customToastService.renderToast(this.invitationError, 'error');
-        setTimeout(() => {
-          this.redirectBasedOnRole();
-        }, 2000);
-      },
-    });
-  }
-
+  
   redirectBasedOnRole() {
     const userRole = this.#authService.getUserRole();
     if (userRole === '4DMlN') {

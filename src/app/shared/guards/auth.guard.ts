@@ -1,9 +1,11 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-// Se sube guardias
+import { AuthService } from '../../auth/services/auth.service';
+
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const token = sessionStorage.getItem('_jwt');
+  const authservice = inject(AuthService);
+  const token = authservice.token();
 
   if (!token) {
     // Redirect to login with return URL

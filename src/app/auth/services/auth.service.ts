@@ -54,8 +54,8 @@ export class AuthService {
   showMessage = computed<boolean>(() => this.#showMessage());
 
   constructor() {
-    this.#token.set(window.sessionStorage.getItem('_jwt'));
-    this.#user.set(JSON.parse(window.sessionStorage.getItem('_user') || 'null'));
+    this.#token.set(window.localStorage.getItem('_jwt'));
+    this.#user.set(JSON.parse(window.localStorage.getItem('_user') || 'null'));
   }
 
   /**
@@ -73,8 +73,8 @@ export class AuthService {
           this.#authStatus.set('authenticated');
           this.#user.set(res.data?.user);
           this.#token.set(res.data?.tkn!);
-          window.sessionStorage.setItem('_jwt', this.#token()!);
-          window.sessionStorage.setItem('_user', JSON.stringify(this.#user()!));
+          window.localStorage.setItem('_jwt', this.#token()!);
+          window.localStorage.setItem('_user', JSON.stringify(this.#user()!));
           this.showResponseByToast(res);
         }),
         map(() => true),
@@ -93,8 +93,8 @@ export class AuthService {
         tap((res) => {
           console.log(res);
           this.#authStatus.set('checking');
-          window.sessionStorage.removeItem('_jwt');
-          window.sessionStorage.removeItem('_user');
+          window.localStorage.removeItem('_jwt');
+          window.localStorage.removeItem('_user');
           this.#user.set(null);
           this.#token.set(null);
           this.showResponseByToast(res);
@@ -110,6 +110,7 @@ export class AuthService {
 
   // sendBeacon al detectar el cierre de pestaña
   sendLogoutBeacon(): void {
+   window.localStorage.clear()
     //Toma estos datos, envíalos, y hazlo tú mismo sin esperarme. No me importa la respuesta.
 
     // 1. URL completa de endpoint de logout
