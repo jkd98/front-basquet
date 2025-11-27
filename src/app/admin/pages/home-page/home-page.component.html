@@ -30,43 +30,49 @@
       </h3>
 
       <!-- Empty State -->
-      <div class="empty-state" *ngIf="leagues.length === 0">
-        <i class="pi pi-inbox"></i>
-        <p>No hay ligas creadas aún</p>
-        <span>Crea tu primera liga para comenzar</span>
-      </div>
+      @if (leagues.length === 0) {
+        <div class="empty-state">
+          <i class="pi pi-inbox"></i>
+          <p>No hay ligas creadas aún</p>
+          <span>Crea tu primera liga para comenzar</span>
+        </div>
+      }
 
       <!-- Leagues Grid -->
-      <div class="leagues-grid" *ngIf="leagues.length > 0">
-        <div class="league-card" *ngFor="let league of leagues">
-          <div class="league-card-header">
-            <button
-              type="button"
-              class="league-menu-button"
-              (click)="menu.toggle($event)"
-              #menuButton
-            >
-              <i class="pi pi-ellipsis-v"></i>
-            </button>
-            <p-menu
-              #menu
-              [model]="getLeagueMenuItems(league)"
-              [popup]="true"
-              appendTo="body"
-            >
-            </p-menu>
-          </div>
-          <img
-            [src]="getLogoUrl(league.logo)"
-            alt="Logo"
-            class="league-logo"
-          />
-          <div class="league-info">
-            <h4 class="league-name">{{ league.name }}</h4>
-            <span class="league-category">{{ league.category }}</span>
-          </div>
+      @if (leagues.length > 0) {
+        <div class="leagues-grid">
+          @for (league of leagues; track league._id) {
+            <div class="league-card">
+              <div class="league-card-header">
+                <button
+                  type="button"
+                  class="league-menu-button"
+                  (click)="menu.toggle($event)"
+                  #menuButton
+                >
+                  <i class="pi pi-ellipsis-v"></i>
+                </button>
+                <p-menu
+                  #menu
+                  [model]="getLeagueMenuItems(league)"
+                  [popup]="true"
+                  appendTo="body"
+                ></p-menu>
+              </div>
+              <img
+                [src]="getLogoUrl(league.logo)"
+                alt="Logo"
+                class="league-logo"
+                (click)="navigateToLeagueDetail(league._id!)"
+              />
+              <div class="league-info">
+                <h4 class="league-name">{{ league.name }}</h4>
+                <span class="league-category">{{ league.category }}</span>
+              </div>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>
@@ -77,7 +83,7 @@
 <!-- Confirm Dialog -->
 <p-confirmDialog></p-confirmDialog>
 
-<!-- Modal EDITAR liga (lo de siempre, sin cambios) -->
+<!-- Edit League Modal -->
 <p-dialog
   [(visible)]="displayEditModal"
   [modal]="true"
@@ -103,7 +109,7 @@
       <input
         type="text"
         id="editLeagueName"
-        [(ngModel)]="editLeagueName"
+        [(ngModel)]="editForm.name"
         placeholder="Ej: Liga Profesional 2024"
         class="text-input"
       />
@@ -117,7 +123,7 @@
       <input
         type="text"
         id="editLeagueCategory"
-        [(ngModel)]="editLeagueCategory"
+        [(ngModel)]="editForm.category"
         placeholder="Ej: Profesional, Juvenil, Amateur"
         class="text-input"
       />
@@ -137,19 +143,23 @@
           style="display: none"
         />
 
-        <div class="upload-content" *ngIf="!editLogoPreview">
-          <i class="pi pi-cloud-upload"></i>
-          <span class="upload-text">Haz clic para subir el logotipo</span>
-          <span class="upload-hint">PNG, JPG o SVG (máx. 5MB)</span>
-        </div>
-
-        <div class="preview-content" *ngIf="editLogoPreview">
-          <img [src]="editLogoPreview" alt="Logo preview" />
-          <div class="preview-overlay">
-            <i class="pi pi-refresh"></i>
-            <span>Cambiar imagen</span>
+        @if (!editForm.logoPreview) {
+          <div class="upload-content">
+            <i class="pi pi-cloud-upload"></i>
+            <span class="upload-text">Haz clic para subir el logotipo</span>
+            <span class="upload-hint">PNG, JPG o SVG (máx. 5MB)</span>
           </div>
-        </div>
+        }
+
+        @if (editForm.logoPreview) {
+          <div class="preview-content">
+            <img [src]="editForm.logoPreview" alt="Logo preview" />
+            <div class="preview-overlay">
+              <i class="pi pi-refresh"></i>
+              <span>Cambiar imagen</span>
+            </div>
+          </div>
+        }
       </div>
     </div>
   </div>

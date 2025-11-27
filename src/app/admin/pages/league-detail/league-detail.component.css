@@ -596,6 +596,7 @@
   margin: 0;
   font-weight: 600;
   line-height: 1.2;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

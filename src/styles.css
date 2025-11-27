@@ -229,4 +229,12 @@ a {
 
 a span {
     font-weight: 800;
+
+
+}.p-menu-item{
+    padding: 1rem;
+}
+
+.p-menu{
+    background-color: var(--primary) !important;
 }

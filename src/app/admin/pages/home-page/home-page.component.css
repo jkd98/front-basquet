@@ -307,6 +307,7 @@
   border: 3px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   margin-bottom: 1.5rem;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {
@@ -375,38 +376,7 @@
   border-radius: 50%;
 }
 
-/* PrimeNG Menu Overrides */
-::ng-deep .p-menu {
-  background: rgba(11, 2, 27, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.8rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
 
-::ng-deep .p-menu .p-menuitem-link {
-  color: var(--white);
-  padding: 1rem 1.5rem;
-  transition: all 0.2s ease;
-}
-
-::ng-deep .p-menu .p-menuitem-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-::ng-deep .p-menu .p-menuitem-icon {
-  color: var(--secondary);
-  margin-right: 0.8rem;
-}
-
-::ng-deep .p-menu .p-menuitem-text {
-  font-size: 1.4rem;
-}
-
-::ng-deep .p-menu .p-menu-separator {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 0.5rem 0;
-}
 
 /* Confirm Dialog Overrides */
 ::ng-deep .p-confirm-dialog {
@@ -463,4 +433,454 @@
 ::ng-deep .p-confirm-dialog .p-button-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Mejoras para el botón del menú */
+.league-menu-button {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0.8rem !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 1.6rem !important;
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+.league-menu-button:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: var(--white) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Animación de entrada del menú */
+::ng-deep .p-menu.p-menu-overlay {
+  animation: menuSlideIn 0.2s ease-out !important;
+}
+
+@keyframes menuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Asegurar que el menú esté por encima de todo */
+::ng-deep .p-menu {
+  z-index: 1000 !important;
+}
+
+/* Mejorar el overlay de fondo */
+::ng-deep .p-menu-overlay {
+  background: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+/* Fix para posicionamiento del menú */
+::ng-deep .p-menu-overlay {
+  position: fixed !important;
+  z-index: 9999 !important;
+}
+
+::ng-deep .p-menu {
+  position: absolute !important;
+  z-index: 10000 !important;
+}
+
+/* MODALES - SIGUIENDO LA ESTRUCTURA DEL TEMA */
+::ng-deep .league-modal {
+  background: rgba(11, 2, 27, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+  overflow: hidden !important;
+}
+
+/* Header del Modal */
+::ng-deep .league-modal .p-dialog-header {
+  background: linear-gradient(135deg, rgba(250, 85, 34, 0.1) 0%, rgba(11, 2, 27, 0.8) 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 2rem !important;
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+}
+
+::ng-deep .league-modal .p-dialog-title {
+  color: var(--white) !important;
+  font-family: var(--fuente-heading) !important;
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+::ng-deep .league-modal .p-dialog-header-icons {
+  display: flex !important;
+  gap: 0.5rem !important;
+}
+
+::ng-deep .league-modal .p-dialog-header-close {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 0.6rem !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  color: var(--white) !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .league-modal .p-dialog-header-close:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Contenido del Modal */
+::ng-deep .league-modal .p-dialog-content {
+  background: rgba(255, 255, 255, 0.03) !important;
+  padding: 2rem !important;
+  color: var(--white) !important;
+}
+
+/* Footer del Modal */
+::ng-deep .league-modal .p-dialog-footer {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 1.5rem 2rem !important;
+  border-radius: 0 0 1.5rem 1.5rem !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 1rem !important;
+}
+
+/* Estilos específicos para el contenido del modal */
+.modal-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  color: var(--white) !important;
+}
+
+.modal-header i {
+  color: var(--secondary) !important;
+  font-size: 1.8rem !important;
+}
+
+.modal-header span {
+  font-family: var(--fuente-heading) !important;
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+}
+
+.modal-content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2rem !important;
+}
+
+/* Campos del Formulario */
+.form-field {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.8rem !important;
+}
+
+.form-field label {
+  color: var(--white) !important;
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.8rem !important;
+}
+
+.form-field label i {
+  color: var(--secondary) !important;
+  font-size: 1.6rem !important;
+}
+
+.text-input {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 0.8rem !important;
+  padding: 1.2rem 1.5rem !important;
+  color: var(--white) !important;
+  font-size: 1.5rem !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.text-input:focus {
+  outline: none !important;
+  border-color: var(--secondary) !important;
+  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.text-input::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Upload Box */
+.logo-upload-box {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 2px dashed rgba(255, 255, 255, 0.2) !important;
+  border-radius: 1rem !important;
+  padding: 2.5rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(10px) !important;
+  text-align: center !important;
+}
+
+.logo-upload-box:hover {
+  border-color: var(--secondary) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-2px) !important;
+}
+
+.upload-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.upload-content i {
+  font-size: 3rem !important;
+  color: var(--secondary) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.upload-text {
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  color: var(--white) !important;
+}
+
+.upload-hint {
+  font-size: 1.3rem !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Preview de Imagen */
+.preview-content {
+  position: relative !important;
+  display: inline-block !important;
+  border-radius: 0.8rem !important;
+  overflow: hidden !important;
+}
+
+.preview-content img {
+  width: 120px !important;
+  height: 120px !important;
+  object-fit: cover !important;
+  border-radius: 0.8rem !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.preview-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: rgba(11, 2, 27, 0.8) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  opacity: 0 !important;
+  transition: all 0.3s ease !important;
+  color: var(--white) !important;
+}
+
+.preview-content:hover .preview-overlay {
+  opacity: 1 !important;
+}
+
+.preview-overlay i {
+  font-size: 2rem !important;
+  color: var(--secondary) !important;
+}
+
+.preview-overlay span {
+  font-size: 1.3rem !important;
+  font-weight: 500 !important;
+}
+
+.modal-footer {
+  display: flex !important;
+  gap: 1rem !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 0.8rem !important;
+  padding: 1.2rem 2rem !important;
+  color: var(--white) !important;
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.8rem !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-submit {
+  background: var(--secondary) !important;
+  border: none !important;
+  border-radius: 0.8rem !important;
+  padding: 1.2rem 2rem !important;
+  color: var(--white) !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.8rem !important;
+  box-shadow: 0 4px 15px rgba(250, 85, 34, 0.3) !important;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #e64a19 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(250, 85, 34, 0.5) !important;
+}
+
+.btn-submit:disabled {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+
+::ng-deep .p-dialog-mask {
+  animation: fadeIn 0.3s ease-out !important;
+}
+
+::ng-deep .p-dialog {
+  animation: scaleIn 0.3s ease-out !important;
+}
+
+@keyframes fadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  ::ng-deep .league-modal {
+    margin: 1rem !important;
+    width: calc(100vw - 2rem) !important;
+  }
+  
+  .modal-footer {
+    flex-direction: column !important;
+  }
+  
+  .btn-cancel,
+  .btn-submit {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog {
+  background: rgba(11, 2, 27, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+}
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog .p-dialog-header {
+  background: linear-gradient(135deg, rgba(229, 57, 53, 0.1) 0%, rgba(11, 2, 27, 0.8) 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 2rem !important;
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+  color: white !important;
+}
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog .p-dialog-content {
+  background: rgba(255, 255, 255, 0.03) !important;
+  padding: 2.5rem 2rem !important;
+  color: white !important;
+  border: none !important;
+}
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog .p-dialog-footer {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 1.5rem 2rem !important;
+  border-radius: 0 0 1.5rem 1.5rem !important;
+  border: none !important;
+}
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog .p-confirmdialog-message {
+  color: white !important;
+  font-size: 1.5rem !important;
+}
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog .p-button {
+  border-radius: 0.8rem !important;
+  padding: 1.2rem 2rem !important;
+  font-size: 1.4rem !important;
+  border: none !important;
+}
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog .p-button.p-button-secondary {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+::ng-deep .p-dialog-mask .p-dialog.p-confirmdialog .p-button.p-button-danger {
+  background: linear-gradient(135deg, #e64a19 0%, #d84315 100%) !important;
+  color: white !important;
 }

@@ -297,6 +297,10 @@ export default class LeagueDetailComponent implements OnInit {
     return labels[status] || status;
   }
 
+  onViewSeasonClick(season: Season): void {
+    this.viewingSeason = season;
+  }
+
   // funciona
   getSeasonMenuItems(season: Season): MenuItem[] {
     return [
@@ -304,7 +308,7 @@ export default class LeagueDetailComponent implements OnInit {
         label: 'Ver Temporada',
         icon: 'pi pi-eye',
         command: () => {
-          this.viewingSeason = season;
+          this.onViewSeasonClick(season);
         }
       },
       {

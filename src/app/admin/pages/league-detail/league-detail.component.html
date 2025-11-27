@@ -70,7 +70,7 @@
                         <span class="season-badge" [ngClass]="getStatusBadgeClass(season.status)">
                             {{ getStatusLabel(season.status) }}
                         </span>
-                        <h4 class="season-year">Temporada {{ season.year }}</h4>
+                        <h4 class="season-year" (click)="onViewSeasonClick(season)">Temporada {{ season.year }}</h4>
                         <p class="season-dates">
                             <i class="pi pi-calendar"></i>
                             {{ season.startDate | date:'dd/MM/yyyy' }}

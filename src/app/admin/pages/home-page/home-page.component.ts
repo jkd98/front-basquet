@@ -14,6 +14,13 @@ import { League } from '../../../shared/interfaces/league.interface';
 import { environment } from '../../../../environments/environment';
 import { LeagueModalComponent } from '../../components/league-modal/league-modal.component';
 
+interface EditLeagueForm {
+  name: string;
+  category: string;
+  logo: File | null;
+  logoPreview: string | null;
+}
+
 @Component({
   imports: [
     CommonModule,
@@ -30,128 +37,110 @@ import { LeagueModalComponent } from '../../components/league-modal/league-modal
   styleUrl: './home-page.component.css'
 })
 export default class HomePageComponent implements OnInit {
-  displayModal: boolean = false;
-
-  displayEditModal: boolean = false;
-  selectedLeague: League | null = null;
-  editLeagueName: string = '';
-  editLeagueCategory: string = '';
-  editLeagueLogo: File | null = null;
-  editLogoPreview: string | null = null;
-
-  isLoading: boolean = false;
-
-  leagues: League[] = [];
-
+  // Services
   private leagueService = inject(LeagueService);
   private customToastService = inject(CustomToastService);
   private confirmationService = inject(ConfirmationService);
   private router = inject(Router);
 
+  // State
+  displayModal = false;
+  displayEditModal = false;
+  isLoading = false;
+  leagues: League[] = [];
+
+  // Edit Form
+  selectedLeague: League | null = null;
+  editForm: EditLeagueForm = {
+    name: '',
+    category: '',
+    logo: null,
+    logoPreview: null
+  };
+
   ngOnInit() {
     this.loadLeagues();
   }
 
-  loadLeagues() {
+  // Data Methods
+  loadLeagues(): void {
     this.leagueService.getLeagues().subscribe({
       next: (response) => {
         this.leagues = response.data || [];
       },
       error: (error) => {
-        console.error('Error al cargar ligas:', error);
-        this.customToastService.renderToast(
-          error.error?.msg || 'Error al cargar las ligas',
-          'error'
-        );
+        this.handleError('Error al cargar las ligas', error);
       }
     });
   }
 
-  openModal() {
+  // Modal Methods
+  openModal(): void {
     this.displayModal = true;
   }
 
-  openEditModal(league: League) {
+  openEditModal(league: League): void {
     this.selectedLeague = league;
-    this.editLeagueName = league.name;
-    this.editLeagueCategory = league.category;
-    this.editLogoPreview = league.logo
-      ? `${environment.baseUrl}/public/uploads/${league.logo}`
-      : null;
-    this.editLeagueLogo = null;
+    this.editForm = {
+      name: league.name,
+      category: league.category,
+      logo: null,
+      logoPreview: league.logo ? this.getLogoUrl(league.logo) : null
+    };
     this.displayEditModal = true;
   }
 
-  closeEditModal() {
+  closeEditModal(): void {
     this.displayEditModal = false;
     this.selectedLeague = null;
     this.resetEditForm();
   }
 
-  onEditFileSelected(event: any) {
-    const file = event.target.files[0];
+  // File Methods
+  onEditFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      this.editLeagueLogo = file;
+      this.editForm.logo = file;
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.editLogoPreview = e.target.result;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.editForm.logoPreview = e.target?.result as string;
       };
       reader.readAsDataURL(file);
     }
   }
 
-  triggerEditFileInput() {
-    const fileInput = document.getElementById('editLogoInput') as HTMLInputElement;
-    fileInput?.click();
+  triggerEditFileInput(): void {
+    document.getElementById('editLogoInput')?.click();
   }
 
-  updateLeague() {
+  // League Operations
+  updateLeague(): void {
     if (!this.selectedLeague || !this.isEditFormValid()) return;
 
     this.isLoading = true;
     const formData = new FormData();
-    formData.append('name', this.editLeagueName);
-    formData.append('category', this.editLeagueCategory);
-    if (this.editLeagueLogo) {
-      formData.append('logo', this.editLeagueLogo);
+    formData.append('name', this.editForm.name);
+    formData.append('category', this.editForm.category);
+    if (this.editForm.logo) {
+      formData.append('logo', this.editForm.logo);
     }
 
     this.leagueService.updateLeague(this.selectedLeague._id!, formData).subscribe({
       next: (response) => {
-        this.customToastService.renderToast(
-          response.msg || 'Liga actualizada correctamente',
-          'success'
-        );
+        this.handleSuccess(response.msg || 'Liga actualizada correctamente');
         this.closeEditModal();
         this.loadLeagues();
-        this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error al actualizar liga:', error);
-        this.customToastService.renderToast(
-          error.error?.msg || 'Error al actualizar la liga',
-          'error'
-        );
+        this.handleError('Error al actualizar la liga', error);
+      },
+      complete: () => {
         this.isLoading = false;
       }
     });
   }
 
-  resetEditForm() {
-    this.editLeagueName = '';
-    this.editLeagueCategory = '';
-    this.editLeagueLogo = null;
-    this.editLogoPreview = null;
-  }
-
-  isEditFormValid(): boolean {
-    return (
-      this.editLeagueName.trim() !== '' &&
-      this.editLeagueCategory.trim() !== ''
-    );
-  }
-
-  confirmDeleteLeague(league: League) {
+  confirmDeleteLeague(league: League): void {
     this.confirmationService.confirm({
       message: `¿Estás seguro de que quieres eliminar la liga "${league.name}"?`,
       header: 'Confirmar Eliminación',
@@ -159,35 +148,28 @@ export default class HomePageComponent implements OnInit {
       acceptLabel: 'Eliminar',
       rejectLabel: 'Cancelar',
       acceptButtonStyleClass: 'p-button-danger',
-      accept: () => {
-        this.deleteLeague(league);
-      }
+      accept: () => this.deleteLeague(league)
     });
   }
 
-  deleteLeague(league: League) {
+  private deleteLeague(league: League): void {
     this.leagueService.deleteLeague(league._id!).subscribe({
       next: (response) => {
-        this.customToastService.renderToast(
-          response.msg || 'Liga eliminada correctamente',
-          'success'
-        );
+        this.handleSuccess(response.msg || 'Liga eliminada correctamente');
         this.loadLeagues();
       },
       error: (error) => {
-        console.error('Error al eliminar liga:', error);
-        this.customToastService.renderToast(
-          error.error?.msg || 'Error al eliminar la liga',
-          'error'
-        );
+        this.handleError('Error al eliminar la liga', error);
       }
     });
   }
 
-  navigateToLeagueDetail(leagueId: string) {
+  // Navigation
+  navigateToLeagueDetail(leagueId: string): void {
     this.router.navigate(['/admin/league', leagueId]);
   }
 
+  // UI Helpers
   getLeagueMenuItems(league: League): MenuItem[] {
     return [
       {
@@ -195,28 +177,52 @@ export default class HomePageComponent implements OnInit {
         icon: 'pi pi-cog',
         command: () => this.navigateToLeagueDetail(league._id!)
       },
-      {
-        separator: true
-      },
+      { separator: true },
       {
         label: 'Editar Liga',
         icon: 'pi pi-pencil',
         command: () => this.openEditModal(league)
       },
-      {
-        separator: true
-      },
+      { separator: true },
       {
         label: 'Eliminar Liga',
         icon: 'pi pi-trash',
         command: () => this.confirmDeleteLeague(league),
-        styleClass: 'text-red-500'
+        styleClass: 'p-menuitem-link-danger'
       }
     ];
   }
 
   getLogoUrl(logo: string | undefined): string {
-    if (!logo) return 'assets/default-league-logo.png';
-    return `${environment.baseUrl}/public/uploads/${logo}`;
+    return logo 
+      ? `${environment.baseUrl}/public/uploads/${logo}`
+      : 'assets/default-league-logo.png';
+  }
+
+  // Form Validation
+  isEditFormValid(): boolean {
+    return this.editForm.name.trim() !== '' && this.editForm.category.trim() !== '';
+  }
+
+  private resetEditForm(): void {
+    this.editForm = {
+      name: '',
+      category: '',
+      logo: null,
+      logoPreview: null
+    };
+  }
+
+  // Utility Methods
+  private handleSuccess(message: string): void {
+    this.customToastService.renderToast(message, 'success');
+  }
+
+  private handleError(defaultMessage: string, error: any): void {
+    console.error(defaultMessage, error);
+    this.customToastService.renderToast(
+      error.error?.msg || defaultMessage,
+      'error'
+    );
   }
 }
