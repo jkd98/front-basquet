@@ -12,7 +12,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         catchError((error) => {
             // Si el error es 401 (No autorizado), el token expiró o es inválido
-            if (error.status === 401) {
+            if (error.status === 401 && error.error?.msg === 'Token no válido' || error.error?.msg === 'Token expirado') {
+                console.log(error)
                 // Limpiar el sessionStorage
                 authservice.logOut().subscribe(r => {
                     if (r) {
