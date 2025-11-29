@@ -62,7 +62,7 @@
 .team-header-grid {
   margin-top: 1.2rem;
   display: grid;
-  grid-template-columns: minmax(0, 2fr) auto;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) auto;
   gap: 1.4rem;
   align-items: flex-end;
 }
@@ -82,12 +82,12 @@
 @media (max-width: 768px) {
   .team-header-grid {
     grid-template-columns: 1fr;
-    align-items: stretch;
+    align-items: flex-end;
   }
 
   .team-logo-field {
-    justify-self: flex-start;
-    align-items: flex-start;
+    justify-self: flex-end;
+    align-items: flex-end;
   }
 }
 

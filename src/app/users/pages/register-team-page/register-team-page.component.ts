@@ -69,7 +69,7 @@ export default class RegisterTeamPageComponent implements OnInit {
 
   teamForm = this.#fb.group({
     teamName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
-    availabilityDays: [[]],
+    availabilityDays: ['', [Validators.required]],
     players: this.#fb.array<FormGroup>([]),
     teamPhoto: [null as File | null, [Validators.required]],
   });
@@ -85,28 +85,11 @@ export default class RegisterTeamPageComponent implements OnInit {
     this.players.valueChanges.subscribe(() => {
       this.validateUniqueJerseyNumbers();
     });
-
-    this.invitationCode = this.#route.snapshot.queryParamMap.get('code');
-    if (!this.invitationCode) {
-      this.invitationError = 'No se proporcionó un código de invitación.';
-      this.isLoading = false;
-      this.#customToastService.renderToast('Código de invitación requerido', 'error');
-      setTimeout(() => {
-        this.redirectBasedOnRole();
-      }, 2000);
-      return;
-    }
     
   }
 
-  
   redirectBasedOnRole() {
-    const userRole = this.#authService.getUserRole();
-    if (userRole === '4DMlN') {
-      this.#router.navigate(['/admin/home']);
-    } else {
-      this.#router.navigate(['/users/home']);
-    }
+      this.#router.navigate(['/users/my-team']);
   }
 
   // Getters
@@ -367,14 +350,6 @@ export default class RegisterTeamPageComponent implements OnInit {
       return;
     }
 
-    if (!this.invitationCode || !this.isValidInvitation) {
-      this.#customToastService.renderToast(
-        'Código de invitación no válido',
-        'error'
-      );
-      return;
-    }
-
     this.submitFormData();
   }
 
@@ -403,12 +378,15 @@ export default class RegisterTeamPageComponent implements OnInit {
     const formData = new FormData();
 
     formData.append('name', this.teamForm.get('teamName')?.value || '');
-    formData.append(
-      'availabilityDays',
-      JSON.stringify(
-        this.teamForm.get('availabilityDays')?.value || ['Monday', 'Wednesday']
-      )
-    );
+
+    const availabilityRaw = this.teamForm.get('availabilityDays')?.value || '';
+    const availabilityArray = availabilityRaw
+      .split(',')
+      .map((d: string) => d.trim())
+      .filter((d: string) => d.length > 0);
+
+    formData.append('availabilityDays', JSON.stringify(availabilityArray));
+
     formData.append('code', this.invitationCode!);
 
     const teamPhoto = this.teamForm.get('teamPhoto')?.value;
@@ -416,6 +394,7 @@ export default class RegisterTeamPageComponent implements OnInit {
       formData.append('logo', teamPhoto);
     }
 
+    // jugadores
     const playersData: any[] = [];
 
     this.players.controls.forEach((control, index) => {
@@ -433,6 +412,7 @@ export default class RegisterTeamPageComponent implements OnInit {
 
     return formData;
   }
+
 
   isFieldInvalid(fieldName: string, formGroup?: FormGroup): boolean {
     const control = formGroup ? formGroup.get(fieldName) : this.teamForm.get(fieldName);
