@@ -1,41 +1,167 @@
 <div class="my-team-container">
-    <div class="loading-container" *ngIf="isLoading">
-        <i class="pi pi-spin pi-spinner"></i>
-        <p>Cargando tu equipo...</p>
+  <!-- Header -->
+  <div class="page-header">
+    <div class="titles">
+      <h1>Mis equipos</h1>
+      <p>Consulta tus equipos registrados y su plantilla de jugadores.</p>
     </div>
 
-    <div class="no-team-container" *ngIf="!isLoading && !team">
-        <i class="pi pi-info-circle"></i>
-        <h2>No tienes un equipo registrado</h2>
-        <p>Si tienes un código de invitación, puedes registrar tu equipo.</p>
-        <button pButton label="Registrar Equipo" routerLink="/users/register-team"></button>
-    </div>
+    <button
+      pButton
+      type="button"
+      label="Registrar equipo"
+      icon="pi pi-plus"
+      class="p-button-rounded p-button-sm create-team-btn"
+      routerLink="/users/register-team"
+    ></button>
+  </div>
 
-    <div class="team-details" *ngIf="!isLoading && team">
-        <div class="team-header">
-            <div class="team-logo-wrapper">
-                <img [src]="getLogoUrl(team.logo)" alt="{{ team.name }}" class="team-logo">
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="isLoading">
+    <i class="pi pi-spin pi-spinner"></i>
+    <p>Cargando tus equipos...</p>
+  </div>
+
+  <div class="no-team-container" *ngIf="!isLoading && teams.length === 0">
+    <i class="pi pi-info-circle"></i>
+    <h2>Aún no tienes equipos registrados</h2>
+    <p>Puedes crear tu primer equipo usando el botón "Registrar equipo".</p>
+  </div>
+
+  <div class="teams-wrapper" *ngIf="!isLoading && teams.length > 0">
+    <h2 class="section-title">
+      <i class="pi pi-users"></i>
+      Tus equipos
+    </h2>
+
+    <div class="teams-list">
+      <div
+        class="team-card"
+        *ngFor="let t of teams"
+        [class.expanded]="expandedTeamId === t._id"
+        (click)="onToggleTeam(t)"
+      >
+        <div class="team-card-main">
+          <div class="team-card-logo">
+            <ng-container *ngIf="t.logo; else logoFallback">
+              <img [src]="getLogoUrl(t.logo)" [alt]="t.name" />
+            </ng-container>
+            <ng-template #logoFallback>
+              <span class="logo-fallback">{{ getInitials(t.name) }}</span>
+            </ng-template>
+          </div>
+
+          <div class="team-card-body">
+            <div class="team-card-header-line">
+              <span class="team-card-name">{{ t.name }}</span>
+              <span class="team-card-tag">Activo</span>
             </div>
-            <div class="team-info">
-                <h1>{{ team.name }}</h1>
-                <span class="status-badge">Activo</span>
+
+            <div
+              class="team-card-meta"
+              *ngIf="t.availabilityDays?.length"
+              title="Días disponibles"
+            >
+              <i class="pi pi-calendar"></i>
+              <span>{{ t.availabilityDays.join(', ') }}</span>
             </div>
+          </div>
+
+          <button
+            *ngIf="expandedTeamId === t._id"
+            type="button"
+            class="collapse-btn"
+            (click)="collapseTeam($event)"
+            pButton
+            icon="pi pi-times"
+          ></button>
         </div>
 
-        <div class="players-section">
-            <h2>Jugadores</h2>
-            <div class="players-grid">
-                <div class="player-card" *ngFor="let player of players">
-                    <div class="player-avatar">
-                        <i class="pi pi-user"></i>
-                    </div>
-                    <div class="player-info">
-                        <h3>{{ player.fullname }}</h3>
-                        <p class="jersey">#{{ player.jersey }}</p>
-                        <p class="role" *ngIf="player.isLider">Capitán</p>
-                    </div>
+        <div class="team-card-players" *ngIf="expandedTeamId === t._id">
+          <div class="players-header-row">
+            <h3>
+              <i class="pi pi-users"></i>
+              Plantilla
+            </h3>
+            <span class="players-count">
+              {{ players.length }} jugador{{ players.length === 1 ? '' : 'es' }}
+            </span>
+          </div>
+
+          <div class="players-loading" *ngIf="isPlayersLoading">
+            <i class="pi pi-spin pi-spinner"></i>
+            <p>Cargando jugadores...</p>
+          </div>
+
+          <div
+            class="players-empty"
+            *ngIf="!isPlayersLoading && players.length === 0"
+          >
+            <i class="pi pi-info-circle"></i>
+            <p>Este equipo aún no tiene jugadores registrados.</p>
+          </div>
+
+          <div
+            class="players-list"
+            *ngIf="!isPlayersLoading && players.length > 0"
+          >
+            <div class="player-row" *ngFor="let player of players">
+              <div class="player-row-inner">
+                <div class="player-avatar">
+                  <ng-container
+                    *ngIf="getPlayerAvatar(player); else playerInitials"
+                  >
+                    <img
+                      [src]="getPlayerAvatar(player)!"
+                      [alt]="player.fullname"
+                    />
+                  </ng-container>
+                  <ng-template #playerInitials>
+                    <span>{{ getInitials(player.fullname) }}</span>
+                  </ng-template>
                 </div>
+
+                <div class="player-main">
+                  <div class="player-top-line">
+                    <span class="player-name">{{ player.fullname }}</span>
+                    <span class="player-jersey">#{{ player.jersey }}</span>
+                  </div>
+
+                  <div class="player-bottom-line">
+                    <div class="player-meta-left">
+                      <span
+                        class="player-age"
+                        *ngIf="getPlayerAge(player.birthday) as age"
+                      >
+                        <i class="pi pi-user"></i>
+                        {{ age }} años
+                      </span>
+
+                      <span
+                        class="player-birth"
+                        *ngIf="player.birthday"
+                      >
+                        <i class="pi pi-calendar"></i>
+                        {{ player.birthday | date: 'dd/MM/yyyy' }}
+                      </span>
+                    </div>
+
+                    <div class="player-meta-right">
+                      <span
+                        class="captain-chip"
+                        *ngIf="player.isLider"
+                      >
+                        <i class="pi pi-star"></i>
+                        Capitán
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
