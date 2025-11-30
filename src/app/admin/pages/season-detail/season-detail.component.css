@@ -697,348 +697,363 @@
 
 /* MODAL DE INVITACIÓN - CAMPO FECHA MEJORADO */
 ::ng-deep .custom-modal {
-  background: rgba(11, 2, 27, 0.95) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: 1.5rem !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
-  overflow: hidden !important;
+    background: rgba(11, 2, 27, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+    overflow: hidden !important;
 }
 
 /* Header del Modal */
 ::ng-deep .custom-modal .p-dialog-header {
-  background: linear-gradient(135deg, rgba(250, 85, 34, 0.1) 0%, rgba(11, 2, 27, 0.8) 100%) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  padding: 2rem !important;
-  border-radius: 1.5rem 1.5rem 0 0 !important;
+    background: linear-gradient(135deg, rgba(250, 85, 34, 0.1) 0%, rgba(11, 2, 27, 0.8) 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 2rem !important;
+    border-radius: 1.5rem 1.5rem 0 0 !important;
 }
 
 ::ng-deep .custom-modal .p-dialog-title {
-  color: var(--white) !important;
-  font-family: var(--fuente-heading) !important;
-  font-size: 1.8rem !important;
-  font-weight: 600 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 1rem !important;
+    color: var(--white) !important;
+    font-family: var(--fuente-heading) !important;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
 }
 
 ::ng-deep .custom-modal .p-dialog-header-close {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 0.6rem !important;
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  color: var(--white) !important;
-  transition: all 0.3s ease !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 0.6rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    color: var(--white) !important;
+    transition: all 0.3s ease !important;
 }
 
 ::ng-deep .custom-modal .p-dialog-header-close:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  transform: scale(1.1) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: scale(1.1) !important;
 }
 
 /* Contenido del Modal */
 ::ng-deep .custom-modal .p-dialog-content {
-  background: rgba(255, 255, 255, 0.03) !important;
-  padding: 2.5rem !important;
-  color: var(--white) !important;
-  border: none !important;
+    width: auto;
+    height: auto;
+    text-align: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03) !important;
+    padding: 2.5rem !important;
+    color: var(--white) !important;
+    border: none !important;
 }
 
 /* Campos del Formulario */
 .modal-content {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
 }
 
 .field {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 1rem !important;
-  width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    width: 100% !important;
 }
 
 .field label {
-  color: var(--white) !important;
-  font-size: 1.5rem !important;
-  font-weight: 600 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.8rem !important;
+    color: var(--white) !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.8rem !important;
 }
 
 
 /* CALENDAR MEJORADO - MÁS GRANDE Y CENTRADO */
 ::ng-deep .custom-modal .p-calendar {
-  width: 100% !important;
-  display: flex !important;
-  justify-content: center !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
 }
 
 ::ng-deep .custom-modal .p-calendar .p-inputtext {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 0.8rem !important;
-  padding: 1.5rem 1.5rem !important; /* MÁS PADDING */
-  color: var(--white) !important;
-  font-size: 1.5rem !important; /* TEXTO MÁS GRANDE */
-  transition: all 0.3s ease !important;
-  backdrop-filter: blur(10px) !important;
-  width: 100% !important;
-  min-height: 60px !important; /* ALTURA MÍNIMA MAYOR */
-  display: flex !important;
-  align-items: center !important;
-  text-align: center !important; /* TEXTO CENTRADO */
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 0.8rem !important;
+    padding: 1.5rem 1.5rem !important;
+    /* MÁS PADDING */
+    color: var(--white) !important;
+    font-size: 1.5rem !important;
+    /* TEXTO MÁS GRANDE */
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(10px) !important;
+    width: 100% !important;
+    min-height: 60px !important;
+    /* ALTURA MÍNIMA MAYOR */
+    display: flex !important;
+    align-items: center !important;
+    text-align: center !important;
+    /* TEXTO CENTRADO */
 }
 
 ::ng-deep .custom-modal .p-calendar .p-inputtext:focus {
-  outline: none !important;
-  border-color: var(--secondary) !important;
-  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2) !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  transform: scale(1.02) !important;
+    outline: none !important;
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    transform: scale(1.02) !important;
 }
 
 ::ng-deep .custom-modal .p-calendar .p-inputtext::placeholder {
-  color: rgba(255, 255, 255, 0.4) !important;
-  text-align: center !important;
-  font-size: 1.4rem !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    text-align: center !important;
+    font-size: 1.4rem !important;
 }
 
 /* BOTÓN DEL CALENDARIO MÁS GRANDE */
 ::ng-deep .custom-modal .p-calendar .p-button {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 0.8rem !important;
-  color: var(--white) !important;
-  transition: all 0.3s ease !important;
-  width: 60px !important; /* ANCHO FIJO */
-  height: 60px !important; /* ALTO FIJO - MÁS GRANDE */
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin-left: 1rem !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 0.8rem !important;
+    color: var(--white) !important;
+    transition: all 0.3s ease !important;
+    width: 60px !important;
+    /* ANCHO FIJO */
+    height: 60px !important;
+    /* ALTO FIJO - MÁS GRANDE */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 1rem !important;
 }
 
 ::ng-deep .custom-modal .p-calendar .p-button:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  transform: scale(1.05) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: scale(1.05) !important;
 }
 
 ::ng-deep .custom-modal .p-calendar .p-button .p-button-icon {
-  font-size: 1.6rem !important; /* ICONO MÁS GRANDE */
+    font-size: 1.6rem !important;
+    /* ICONO MÁS GRANDE */
 }
 
 /* CONTENEDOR DEL CALENDARIO COMPLETO */
 ::ng-deep .custom-modal .p-calendar .p-inputgroup {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  gap: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    gap: 1rem !important;
 }
 
 /* POPUP DEL CALENDARIO */
 ::ng-deep .p-datepicker {
-  background: rgba(11, 2, 27, 0.95) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: 1rem !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
-  color: var(--white) !important;
+    background: rgba(11, 2, 27, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+    color: var(--white) !important;
 }
 
 ::ng-deep .p-datepicker .p-datepicker-header {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: var(--white) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--white) !important;
 }
 
 ::ng-deep .p-datepicker .p-datepicker-calendar th {
-  color: rgba(255, 255, 255, 0.7) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 
-::ng-deep .p-datepicker .p-datepicker-calendar td > span {
-  color: var(--white) !important;
-  border-radius: 0.5rem !important;
+::ng-deep .p-datepicker .p-datepicker-calendar td>span {
+    color: var(--white) !important;
+    border-radius: 0.5rem !important;
 }
 
-::ng-deep .p-datepicker .p-datepicker-calendar td > span.p-highlight {
-  background: var(--secondary) !important;
-  color: white !important;
+::ng-deep .p-datepicker .p-datepicker-calendar td>span.p-highlight {
+    background: var(--secondary) !important;
+    color: white !important;
 }
 
-::ng-deep .p-datepicker .p-datepicker-calendar td > span:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
+::ng-deep .p-datepicker .p-datepicker-calendar td>span:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Enlace Generado */
 .generated-link-container {
-  animation: fadeInUp 0.4s ease-out !important;
+    animation: fadeInUp 0.4s ease-out !important;
 }
 
 .generated-link-container p {
-  color: var(--white) !important;
-  font-size: 1.5rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 1rem !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.8rem !important;
+    color: var(--white) !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.8rem !important;
 }
 
 .link-box {
-  display: flex !important;
-  gap: 1rem !important;
-  align-items: center !important;
+    display: flex !important;
+    gap: 1rem !important;
+    align-items: center !important;
 }
 
 .link-box input {
-  flex: 1 !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 0.8rem !important;
-  padding: 1.2rem 1.5rem !important;
-  color: var(--white) !important;
-  font-size: 1.4rem !important;
-  backdrop-filter: blur(10px) !important;
-  transition: all 0.3s ease !important;
-  min-height: 50px !important;
+    flex: 1 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 0.8rem !important;
+    padding: 1.2rem 1.5rem !important;
+    color: var(--white) !important;
+    font-size: 1.4rem !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+    min-height: 50px !important;
 }
 
 .link-box input:focus {
-  outline: none !important;
-  border-color: var(--secondary) !important;
-  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2) !important;
+    outline: none !important;
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.2) !important;
 }
 
 .btn-icon {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 0.8rem !important;
-  width: 50px !important;
-  height: 50px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: var(--white) !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  flex-shrink: 0 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 0.8rem !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--white) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    flex-shrink: 0 !important;
 }
 
 .btn-icon:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
 .btn-icon i {
-  font-size: 1.4rem !important;
+    font-size: 1.4rem !important;
 }
 
 /* Footer del Modal */
 ::ng-deep .custom-modal .p-dialog-footer {
-  background: rgba(0, 0, 0, 0.2) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-  padding: 1.5rem 2rem !important;
-  border-radius: 0 0 1.5rem 1.5rem !important;
-  border: none !important;
-  display: flex !important;
-  gap: 1rem !important;
-  justify-content: center !important; /* CENTRADO */
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 1.5rem 2rem !important;
+    border-radius: 0 0 1.5rem 1.5rem !important;
+    border: none !important;
+    display: flex !important;
+    gap: 1rem !important;
+    justify-content: center !important;
+    /* CENTRADO */
 }
 
 /* Botón Personalizado */
 .btn-submit {
-  background: linear-gradient(135deg, var(--secondary) 0%, #e64a19 100%) !important;
-  border: none !important;
-  border-radius: 0.8rem !important;
-  padding: 1.2rem 2.5rem !important;
-  color: var(--white) !important;
-  font-size: 1.4rem !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.8rem !important;
-  box-shadow: 0 4px 15px rgba(250, 85, 34, 0.3) !important;
-  min-width: 200px !important; /* MÁS ANCHO */
-  justify-content: center !important;
-  min-height: 55px !important; /* MÁS ALTO */
+    background: linear-gradient(135deg, var(--secondary) 0%, #e64a19 100%) !important;
+    border: none !important;
+    border-radius: 0.8rem !important;
+    padding: 1.2rem 2.5rem !important;
+    color: var(--white) !important;
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.8rem !important;
+    box-shadow: 0 4px 15px rgba(250, 85, 34, 0.3) !important;
+    min-width: 200px !important;
+    /* MÁS ANCHO */
+    justify-content: center !important;
+    min-height: 55px !important;
+    /* MÁS ALTO */
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: linear-gradient(135deg, #e64a19 0%, var(--secondary) 100%) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(250, 85, 34, 0.5) !important;
+    background: linear-gradient(135deg, #e64a19 0%, var(--secondary) 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(250, 85, 34, 0.5) !important;
 }
 
 .btn-submit:disabled {
-  background: rgba(255, 255, 255, 0.2) !important;
-  color: rgba(255, 255, 255, 0.5) !important;
-  cursor: not-allowed !important;
-  transform: none !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Animaciones */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Efectos de overlay */
 ::ng-deep .p-dialog-mask {
-  background: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(4px) !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(4px) !important;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  ::ng-deep .custom-modal {
-    margin: 1rem !important;
-    width: calc(100vw - 2rem) !important;
-  }
-  
-  .link-box {
-    flex-direction: column !important;
-    gap: 1rem !important;
-  }
-  
-  .btn-icon {
-    width: 100% !important;
-    height: 50px !important;
-  }
-  
-  ::ng-deep .custom-modal .p-dialog-footer {
-    flex-direction: column !important;
-  }
-  
-  .btn-submit {
-    width: 100% !important;
-  }
-  
-  /* Calendar responsive */
-  ::ng-deep .custom-modal .p-calendar .p-inputgroup {
-    flex-direction: column !important;
-    gap: 1rem !important;
-  }
-  
-  ::ng-deep .custom-modal .p-calendar .p-button {
-    width: 100% !important;
-    margin-left: 0 !important;
-  }
+    ::ng-deep .custom-modal {
+        margin: 1rem !important;
+        width: calc(100vw - 2rem) !important;
+    }
+
+    .link-box {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .btn-icon {
+        width: 100% !important;
+        height: 50px !important;
+    }
+
+    ::ng-deep .custom-modal .p-dialog-footer {
+        flex-direction: column !important;
+    }
+
+    .btn-submit {
+        width: 100% !important;
+    }
+
+    /* Calendar responsive */
+    ::ng-deep .custom-modal .p-calendar .p-inputgroup {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    ::ng-deep .custom-modal .p-calendar .p-button {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
 }
