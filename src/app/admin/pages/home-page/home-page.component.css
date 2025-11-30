@@ -1,3 +1,4 @@
+
 /* Admin Container */
 .admin-container {
   min-height: 100vh;
@@ -10,6 +11,7 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+
 
 /* Header Section */
 .admin-header {
@@ -481,9 +483,9 @@
   z-index: 1000 !important;
 }
 
-/* Mejorar el overlay de fondo */
+/* Se cambia para mejorar el color del menu */
 ::ng-deep .p-menu-overlay {
-  background: rgba(0, 0, 0, 0.4) !important;
+  background: var(--primary) !important;
   backdrop-filter: blur(2px) !important;
 }
 
