@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, effect } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../auth/services/auth.service';
@@ -16,7 +16,7 @@ type NavLinks = {
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [MenubarModule, RouterLink],
+  imports: [MenubarModule, RouterLink, RouterLinkActive],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
@@ -27,25 +27,35 @@ export class NavBarComponent implements OnInit {
     {label:'Inicio',path:'/users/home'},
   ];
 
-  #authService = inject(AuthService);
+  authService = inject(AuthService);
   #router = inject(Router);
 
   constructor() {
     // Reaccionar a cambios en el estado de autenticación o usuario
     effect(() => {
-      const user = this.#authService.user();
+      const user = this.authService.user();
       this.updateMenu(user);
     });
   }
 
   ngOnInit() {
-    const user = this.#authService.user();
+    const user = this.authService.user();
     this.updateMenu(user);
   }
 
   updateMenu(user: any) {
     const role = user?.role;
+    let links:NavLinks[] = []
+    if (role === '4DMlN'){
+       links = [
+        {
+          label:'Panel',
+          path:'/admin/panel'
+        }
+      ]
+    }
 
+    this.navItems = links
 
     /* if (role === '4DMlN') {
       this.items = [
@@ -92,9 +102,17 @@ export class NavBarComponent implements OnInit {
     } */
   }
 
-  logout() {
-    this.#authService.logOut().subscribe(() => {
+  onLogout() {
+    this.authService.logOut().subscribe(() => {
       this.#router.navigate(['/auth/login']);
     });
+  }
+
+  onLogin(){
+    this.#router.navigate(['/auth/login']);
+  }
+
+  onNewAccount(){
+    this.#router.navigate(['/auth/register']);
   }
 }

@@ -3,10 +3,14 @@
         <div class="welcome-text">
             <h2>Bienvenido</h2>
             <p>Ingresa tus datos para usar las funcinalidades del sistema</p>
+            <button class="btn" (click)="goHome()">Inicio</button>
         </div>
 
         <div class="wf">
             <router-outlet />
+            @if(esMovil()){
+            <button class="btn" (click)="goHome()">Inicio</button>
+            }
         </div>
     </main>
 </div>

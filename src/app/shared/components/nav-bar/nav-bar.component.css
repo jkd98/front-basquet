@@ -1,9 +1,15 @@
 /*Estilos usando el modo: Mobile first*/
 
+.cont-nav {
+    background-color: var(--primary);
+}
+
+
+
 .nav,
 .nav__logo,
 .nav__links,
-.nav__session{
+.nav__session {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -11,6 +17,83 @@
     justify-content: center;
 }
 
-.nav__logo img{
-    width: 25rem;
+.nav__logo {
+    padding: 2.5rem;
+}
+
+@media(min-width:768px) {
+    .nav {
+        display: grid;
+        grid-template-columns: 1fr 3fr 2fr;
+        column-gap: 2rem;
+        max-width: 120rem;
+        margin: 0 auto;
+        width: 95%;
+    }
+
+
+
+    .nav__links,
+    .nav__session {
+        flex-direction: row;
+        gap: 2rem;
+    }
+
+}
+
+.nav__logo img {
+    width: 10rem;
+    height: 5rem;
+}
+
+.nav__link {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary);
+    font-weight: 600;
+    border: none;
+    padding: 1.5rem 2rem;
+    font-size: 1.6rem;
+    transition-property: background-color color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+@media(min-width:768px) {
+    .nav__link {
+        background-color: transparent;
+        width: auto;
+    }
+
+}
+
+.active,
+.nav__link:hover {
+    background-color: var(--secondary);
+    color: var(--primary)
+}
+
+
+@media(min-width:768px) {
+
+    .active,
+    .nav__link:hover {
+        color: var(--white);
+        background: #020024;
+        background: linear-gradient(180deg, var(--primary) 92%, var(--white) 100%);
+    }
+
+    .login {
+        background-color: var(--secondary);
+        border-radius: 1rem;
+    }
+
+    .login:hover {
+        background-color: var(--primary);
+    }
+
 }

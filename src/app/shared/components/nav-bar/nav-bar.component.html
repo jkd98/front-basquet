@@ -6,19 +6,25 @@
   </p-menubar>
 </div> -->
 
-<nav class="nav">
-  <div class="nav__logo">
-    <a class="nav__link-logo" [routerLink]="['/users/home']">
-      <img class="nav__img-logo" src="logotipo.png" />
-    </a>
-  </div>
-  <div class="nav__links">
-    @for (item of navItems; track $index) {
-    <a class="nav__link" [routerLink]="[item.path]">{{item.label}}</a>
-    }
-  </div>
-  <div class="nav__session">
-    <button class="nav__link login" type="button">Iniciar Sesión</button>
-    <button class="nav__link login" type="button">Cerrar Sesión</button>
-  </div>
-</nav>
+<div class="cont-nav">
+  <nav class="nav">
+    <div class="nav__logo">
+      <a class="nav__link-logo" [routerLink]="['/users/home']">
+        <img class="nav__img-logo" src="logotipo.png" />
+      </a>
+    </div>
+    <div class="nav__links">
+      @for (item of navItems; track $index) {
+      <a class="nav__link" [routerLink]="[item.path]" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{item.label}}</a>
+      }
+    </div>
+    <div class="nav__session">
+      @if(authService.token()){
+        <button class="nav__link login" type="button" (click)="onLogout()" >Cerrar Sesión</button>
+      }@else {
+        <button class="nav__link login" type="button" (click)="onLogin()" >Iniciar Sesión</button>
+      }
+      <button class="nav__link new-account" type="button" (click)="onNewAccount()" >Crear Cuenta</button>
+    </div>
+  </nav>
+</div>

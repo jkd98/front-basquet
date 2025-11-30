@@ -9,7 +9,7 @@ export const usersRoutes: Routes = [
             {
                 path: 'home',
                 loadComponent: () => import('./pages/home-user-page/home-user-page.component'),
-                title: 'Inicio'
+                title: 'Sistema de Gestión Deportiva - Inicio'
             },
             {
                 path: 'register-team',

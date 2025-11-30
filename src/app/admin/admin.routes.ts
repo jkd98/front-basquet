@@ -6,7 +6,7 @@ export const adminRoutes: Routes = [
         loadComponent: () => import('./layout/admin-layout/admin-layout.component'),
         children: [
             {
-                path: 'home',
+                path: 'panel',
                 loadComponent: () => import('./pages/home-page/home-page.component')
             },
             {

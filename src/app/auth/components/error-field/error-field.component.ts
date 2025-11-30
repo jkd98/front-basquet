@@ -17,7 +17,7 @@ export class ErrorFieldComponent {
 
   getErrorField(): string | null {
     const errors = this.control.errors ?? {};
-    console.log(errors);
+    //console.log(errors);
     for (const key of Object.keys(errors)) {
       switch (key) {
         case 'required':

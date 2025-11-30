@@ -57,6 +57,7 @@ img {
     width: 100%;
 }
 
+
 /*Estilos form*/
 
 /* inicio 
@@ -78,7 +79,7 @@ img {
 }
 
 .form__heading {
-    font-size: 5rem;
+    font-size: 4.5rem;
     text-align: center;
     padding-bottom: 5rem;
     width: 100%;
@@ -231,10 +232,49 @@ a span {
     font-weight: 800;
 
 
-}.p-menu-item{
+}
+
+.p-menu-item {
     padding: 1rem;
 }
 
-.p-menu{
+.p-menu {
     background-color: var(--primary) !important;
+}
+
+.btn {
+    position: fixed;
+    right: 1rem;
+    bottom: 6rem;
+    background-color: var(--secondary);
+    border: 1px solid var(--primary);
+    border-radius: 30rem;
+    width: 10rem;
+    font-weight: 700;
+    font-size: 1.6rem;
+    padding-block: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition-property: background;
+    transition-duration: 350ms;
+    transition-timing-function: ease-in-out;
+}
+
+@media(min-width:768px) {
+    .btn {
+        position: relative;
+        right: 0;
+        bottom: 0;
+        margin-top: 2rem;
+        width: 90%;
+        border-radius: .5rem;
+
+    }
+}
+
+.btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
 }
