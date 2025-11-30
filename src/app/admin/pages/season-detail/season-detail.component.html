@@ -182,7 +182,7 @@
         <div class="field" *ngIf="!generatedLink">
             <label for="expireDate">Fecha de Expiración</label>
             <p-calendar [(ngModel)]="invitationExpireDate" [showTime]="true" [showIcon]="true" inputId="expireDate"
-                appendTo="body"></p-calendar>
+                appendTo="body" placeholder="Selecciona fecha y hora"></p-calendar>
         </div>
 
         <div class="generated-link-container" *ngIf="generatedLink">
@@ -196,12 +196,10 @@
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <button *ngIf="!generatedLink" pButton label="Cancelar" class="p-button-text"
-            (click)="displayInviteModal=false"></button>
-        <button *ngIf="!generatedLink" pButton label="Generar" class="p-button-primary" (click)="generateInvitation()"
-            [disabled]="!invitationExpireDate"></button>
-        <button *ngIf="generatedLink" pButton label="Cerrar" class="p-button-primary"
-            (click)="displayInviteModal=false"></button>
+
+        <button *ngIf="!generatedLink" pButton label="Generar" class="btn-submit" (click)="generateInvitation()"
+            [disabled]="!invitationExpireDate">Generar Invitación</button>
+
     </ng-template>
 </p-dialog>
 
@@ -221,7 +219,7 @@
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton label="Asignar Fecha" class="btn-assign-date" (click)="assignDateToGame()"
+        <button pButton label="Asignar Fecha" class="btn-submit" (click)="assignDateToGame()"
             [disabled]="!selectedGameDate">Asignar Fecha</button>
     </ng-template>
 </p-dialog>
