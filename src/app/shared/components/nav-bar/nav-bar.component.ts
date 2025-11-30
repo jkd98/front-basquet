@@ -1,19 +1,32 @@
 import { Component, inject, OnInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../auth/services/auth.service';
 import { CommonModule } from '@angular/common';
 
+
+type NavLinks = {
+  label: string;
+  path?: string;
+}
+
+
+
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [MenubarModule, CommonModule],
+  imports: [MenubarModule, RouterLink],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
 export class NavBarComponent implements OnInit {
-  items: MenuItem[] | undefined;
+  //items: MenuItem[] | undefined;
+  
+  navItems:NavLinks[]=[
+    {label:'Inicio',path:'/users/home'},
+  ];
+
   #authService = inject(AuthService);
   #router = inject(Router);
 
@@ -33,7 +46,8 @@ export class NavBarComponent implements OnInit {
   updateMenu(user: any) {
     const role = user?.role;
 
-    if (role === '4DMlN') {
+
+    /* if (role === '4DMlN') {
       this.items = [
         {
           label: 'Inicio',
@@ -75,7 +89,7 @@ export class NavBarComponent implements OnInit {
           routerLink: '/auth/login'
         }
       ];
-    }
+    } */
   }
 
   logout() {

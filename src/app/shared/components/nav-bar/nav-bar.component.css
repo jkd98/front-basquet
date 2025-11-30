@@ -1,99 +1,16 @@
-.liquid-glass {
-    width: 90%;
-    height: 80px;
-    border-radius: 28px;
-    position: relative;
-    isolation: isolate;
-    box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.2);
+/*Estilos usando el modo: Mobile first*/
+
+.nav,
+.nav__logo,
+.nav__links,
+.nav__session{
+    width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: none;
-    background: none;
-    padding: 0 20px;
-    margin: 20px auto;
 }
 
-.liquid-glass::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    border-radius: 28px;
-    box-shadow: inset 0 0 15px -5px #000000;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.liquid-glass::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: 28px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-/* Estilos para hacer transparente el Menubar de PrimeNG */
-:host ::ng-deep .p-menubar {
-    background: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    width: 100%;
-}
-
-:host ::ng-deep .p-menubar .p-menubar-root-list {
-    background: transparent !important;
-    gap: 10px;
-    /* Nueva propiedad para separación */
-}
-
-:host ::ng-deep .p-menuitem-link {
-    background: transparent !important;
-    padding: 20px 32px !important;
-    /* Aumentar padding para mejor separación */
-}
-
-:host ::ng-deep .p-menuitem-text {
-    color: white !important;
-    font-family: 'Georgia', serif;
-    font-size: 1.1rem;
-}
-
-:host ::ng-deep .p-menuitem-icon {
-    color: white !important;
-}
-
-:host ::ng-deep .p-menuitem-link:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-radius: 10px;
-}
-
-/* Separación mejorada entre los items del menú */
-:host ::ng-deep .p-menubar .p-menuitem {
-    margin: 0 12px !important;
-    /* Separación horizontal aumentada */
-}
-
-:host ::ng-deep .p-menubar-start {
-    margin-right: 30px !important;
-    /* Separación extra para el logo */
-}
-
-/* Separación específica para el botón de cerrar sesión */
-:host ::ng-deep .ml-auto {
-    margin-left: auto !important;
-    margin-right: 10px !important;
-}
-
-/* Asegurar que los submenús también tengan buen espaciado */
-:host ::ng-deep .p-submenu-list {
-    background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 10px !important;
-}
-
-:host ::ng-deep .p-submenu-list .p-menuitem {
-    margin: 5px 0 !important;
+.nav__logo img{
+    width: 25rem;
 }

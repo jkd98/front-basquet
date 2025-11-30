@@ -15,7 +15,7 @@ export const usersRoutes: Routes = [
                 path: 'register-team',
                 loadComponent: () => import('./pages/register-team-page/register-team-page.component'),
                 title: 'Registro de Equipo',
-                canActivate: [authGuard]
+                //canActivate: [authGuard]
             },
             {
                 path: 'my-team',
