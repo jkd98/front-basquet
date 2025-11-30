@@ -196,12 +196,10 @@
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <button *ngIf="!generatedLink" pButton label="Cancelar" class="p-button-text"
-            (click)="displayInviteModal=false"></button>
-        <button *ngIf="!generatedLink" pButton label="Generar" class="p-button-primary" (click)="generateInvitation()"
-            [disabled]="!invitationExpireDate"></button>
-        <button *ngIf="generatedLink" pButton label="Cerrar" class="p-button-primary"
-            (click)="displayInviteModal=false"></button>
+
+        <button *ngIf="!generatedLink" pButton label="Generar" class="btn-submit" (click)="generateInvitation()"
+            [disabled]="!invitationExpireDate">Generar Invitación</button>
+
     </ng-template>
 </p-dialog>
 
