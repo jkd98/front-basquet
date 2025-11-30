@@ -110,7 +110,6 @@ export class AuthService {
 
   // sendBeacon al detectar el cierre de pestaña
   sendLogoutBeacon(): void {
-   window.localStorage.clear()
     //Toma estos datos, envíalos, y hazlo tú mismo sin esperarme. No me importa la respuesta.
 
     // 1. URL completa de endpoint de logout

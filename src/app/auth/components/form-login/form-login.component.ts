@@ -41,7 +41,7 @@ export class FormLoginComponent {
         // Redirect based on user role
         const userRole = this.authService.getUserRole();
         if (userRole === '4DMlN') {
-          this.#router.navigate(['/admin/home']);
+          this.#router.navigate(['/admin/panel']);
         } else if (userRole === 'Coach') {
           this.#router.navigate(['/users/home']);
         } else {
