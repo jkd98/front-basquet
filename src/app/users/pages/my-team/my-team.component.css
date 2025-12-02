@@ -16,6 +16,32 @@
   margin-bottom: 1.75rem;
 }
 
+.titles {
+  width: 80%;
+}
+
+.btn {
+    background-color: var(--secondary);
+    border: 1px solid var(--primary);
+    border-radius: 1rem;
+    width: 20%;
+    font-weight: 700;
+    font-size: 1.6rem;
+    padding-block: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition-property: background;
+    transition-duration: 350ms;
+    transition-timing-function: ease-in-out;
+}
+
+
+.btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
 .page-header .titles h1 {
   margin: 0;
   font-size: 2.1rem;
@@ -42,6 +68,7 @@
   min-height: 40vh;
   text-align: center;
   gap: 0.75rem;
+  font-size: 1.6rem;
 }
 
 .loading-container i,
@@ -52,7 +79,7 @@
 
 .no-team-container h2 {
   margin: 0.2rem 0;
-  font-size: 1.4rem;
+  font-size: 1.8rem;
 }
 
 .teams-wrapper {

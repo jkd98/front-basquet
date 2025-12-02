@@ -22,9 +22,9 @@ type NavLinks = {
 })
 export class NavBarComponent implements OnInit {
   //items: MenuItem[] | undefined;
-  
-  navItems:NavLinks[]=[
-    {label:'Inicio',path:'/users/home'},
+
+  navItems: NavLinks[] = [
+    { label: 'Inicio', path: '/users/home' },
   ];
 
   authService = inject(AuthService);
@@ -45,13 +45,17 @@ export class NavBarComponent implements OnInit {
 
   updateMenu(user: any) {
     const role = user?.role;
-    let links:NavLinks[] = []
-    if (role === '4DMlN'){
-       links = [
+    let links: NavLinks[] = []
+    if (role === '4DMlN') {
+      links = [
         {
-          label:'Panel',
-          path:'/admin/panel'
-        }
+          label: 'Panel',
+          path: '/admin/panel'
+        },
+        {
+          label: 'Mis Equipos',
+          path: '/users/my-team'
+        },
       ]
     }
 
@@ -108,11 +112,11 @@ export class NavBarComponent implements OnInit {
     });
   }
 
-  onLogin(){
+  onLogin() {
     this.#router.navigate(['/auth/login']);
   }
 
-  onNewAccount(){
+  onNewAccount() {
     this.#router.navigate(['/auth/register']);
   }
 }

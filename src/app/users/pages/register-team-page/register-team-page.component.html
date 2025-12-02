@@ -234,7 +234,7 @@
                                 <span>Número de Playera/Dorsal *</span>
                               </label>
 
-                              <p-inputNumber
+                              <input
                                 id="playerJerseyNumber"
                                 formControlName="jerseyNumber"
                                 [class.ng-invalid]="
@@ -247,7 +247,7 @@
                                 [max]="99"
                                 placeholder="Número de playera"
                                 styleClass="w-full number-input"
-                              ></p-inputNumber>
+                              >
 
                               @if (
                                 isFieldInvalid(
