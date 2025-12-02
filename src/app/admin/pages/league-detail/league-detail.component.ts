@@ -261,7 +261,7 @@ export default class LeagueDetailComponent implements OnInit {
 
   // Helper Methods
   goBack() {
-    this.router.navigate(['/admin/home']);
+    this.router.navigate(['/admin/panel']);
   }
 
   getLogoUrl(logo: string | undefined): string {
