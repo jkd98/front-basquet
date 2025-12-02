@@ -23,9 +23,7 @@ type NavLinks = {
 export class NavBarComponent implements OnInit {
   //items: MenuItem[] | undefined;
 
-  navItems: NavLinks[] = [
-    { label: 'Inicio', path: '/users/home' },
-  ];
+  navItems: NavLinks[] = [];
 
   authService = inject(AuthService);
   #router = inject(Router);
@@ -49,6 +47,10 @@ export class NavBarComponent implements OnInit {
     if (role === '4DMlN') {
       links = [
         {
+          label: 'Inicio',
+          path: '/users/home'
+        },
+        {
           label: 'Panel',
           path: '/admin/panel'
         },
@@ -56,10 +58,13 @@ export class NavBarComponent implements OnInit {
           label: 'Mis Equipos',
           path: '/users/my-team'
         },
+        {
+          label:'Puntuaciones',
+          path: '/users/points-sheet'
+        },
       ]
     }
-
-    this.navItems = links
+    this.navItems = links;
 
     /* if (role === '4DMlN') {
       this.items = [
