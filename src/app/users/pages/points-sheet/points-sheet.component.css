@@ -13,6 +13,7 @@
 
 .teams__team {
     padding: 1rem;
+    border-radius: 1rem;
 }
 
 .team__heading {

@@ -35,9 +35,9 @@ export class NewPassFormComponent {
   };
 
   registerForm = this.#fb.group({
-    pass: ['Pass*123456', [Validators.required, Validators.pattern('(?=.*[A-Z])(?=.*[0-9])(?=.*[-_!@#$%^&*()+={};:,.<>?~]).{8,}'), Validators.minLength(8),]],
-    confirmPass: ['Pass*123456', [Validators.required,]],
-    code: ['123456', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^[0-9]*$')]]
+    pass: ['', [Validators.required, Validators.pattern('(?=.*[A-Z])(?=.*[0-9])(?=.*[-_!@#$%^&*()+={};:,.<>?~]).{8,}'), Validators.minLength(8),]],
+    confirmPass: ['', [Validators.required,]],
+    code: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^[0-9]*$')]]
   },
     {
       validators: [this.passwordMatchValidator]
