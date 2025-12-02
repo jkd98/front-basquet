@@ -24,6 +24,12 @@ export const usersRoutes: Routes = [
                 canActivate: [authGuard]
             },
             {
+                path:'points-sheet',
+                loadComponent: () => import('./pages/points-sheet/points-sheet.component').then(m => m.PointsSheetComponent),
+                title: 'Hoja de Puntuación',
+                canActivate: [authGuard]
+            },
+            {
                 path: '**',
                 redirectTo: 'home',
                 pathMatch: 'full'
