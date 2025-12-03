@@ -6,98 +6,41 @@
 
         <!-- Formulario -->
         <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class="wizard-form">
-                <!-- Encabezado -->
-                <div class="wizard-header">
-                  <div class="wizard-header-top">
-                    <h1 class="form__heading">Registro de Equipo</h1>
-                    <p class="wizard-subtitle">
-                      Completa los datos del equipo y registra tu plantilla de jugadores.
-                    </p>
+          <div class="wizard-header">
+            <div class="wizard-header-top">
+              <h1 class="form__heading">Registro de jugadores</h1>
+              <p class="wizard-subtitle">
+                Completa los datos de la plantilla de jugadores para tu equipo.
+              </p>
+            </div>
+
+            <!-- Info del equipo -->
+            <div class="team-summary" *ngIf="teamId; else noTeamWarning">
+              <div class="team-summary-logo">
+                <ng-container *ngIf="teamLogo; else teamLogoFallback">
+                  <img [src]="getLogoUrl(teamLogo)" [alt]="teamName || 'Logo del equipo'" />
+                </ng-container>
+                <ng-template #teamLogoFallback>
+                  <div class="team-summary-logo team-summary-logo--fallback">
+                    <span>{{ getInitials(teamName) }}</span>
                   </div>
+                </ng-template>
+              </div>
 
-                  <div class="team-header-grid">
-                    <!-- Nombre equipo -->
-                    <div class="form__campo team-name-field">
-                      <label for="teamName">
-                        <span class="label-icon"><i class="pi pi-tag"></i></span>
-                        <span>Nombre del Equipo *</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="teamName"
-                        formControlName="teamName"
-                        [class.ng-invalid]="isFieldInvalid('teamName')"
-                        placeholder="Ej: Guerreros del Norte"
-                      />
-                      @if (isFieldInvalid('teamName')) {
-                        <small class="error-message">
-                          {{ getFieldError('teamName') }}
-                        </small>
-                      }
-                    </div>
-                    <!-- Días disponibles -->
-                    <div class="form__campo team-name-field">
-                      <label for="availabilityDays">
-                        <span class="label-icon"><i class="pi pi-tag"></i></span>
-                        <span>Día(s) disponibles*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="availabilityDays"
-                        formControlName="availabilityDays"
-                        [class.ng-invalid]="isFieldInvalid('availabilityDays')"
-                        placeholder="Ej: Lunes, Miércoles y Viernes"
-                      />
-                      @if (isFieldInvalid('availabilityDays')) {
-                        <small class="error-message">
-                          {{ getFieldError('availabilityDays') }}
-                        </small>
-                      }
-                    </div>
+              <div class="team-summary-info">
+                <h2>{{ teamName || 'Equipo sin nombre' }}</h2>
+                <p>Estás registrando jugadores para este equipo.</p>
+              </div>
+            </div>
 
-                    <!-- Logo -->
-                    <div class="form__campo team-logo-field">
-                      <label>
-                        <span class="label-icon"><i class="pi pi-image"></i></span>
-                        <span>Logo del Equipo *</span>
-                      </label>
+            <ng-template #noTeamWarning>
+              <p class="wizard-subtitle" style="margin-top: 1rem; color: #fca5a5;">
+                No se recibió un equipo válido. Vuelve a la pantalla "Mis equipos" y usa el
+                botón "Registrar jugadores".
+              </p>
+            </ng-template>
+          </div>
 
-                      <input
-                        type="file"
-                        id="teamPhotoInput"
-                        (change)="onTeamPhotoSelect($event)"
-                        accept="image/*"
-                        hidden
-                      />
-
-                      <div
-                        class="photo-upload-box photo-upload-box--compact"
-                        [class.has-image]="teamPhotoPreview"
-                        [class.error]="isFieldInvalid('teamPhoto')"
-                        (click)="triggerTeamPhotoInput()"
-                      >
-                        @if (teamPhotoPreview) {
-                          <img [src]="teamPhotoPreview" alt="Vista previa" />
-                          <div class="overlay">
-                            <i class="pi pi-pencil"></i>
-                            <span>Cambiar Foto</span>
-                          </div>
-                        } @else {
-                          <div class="placeholder">
-                            <i class="pi pi-camera"></i>
-                            <span>Añadir Imagen</span>
-                          </div>
-                        }
-                      </div>
-
-                      @if (isFieldInvalid('teamPhoto')) {
-                        <small class="error-message">
-                          {{ getFieldError('teamPhoto') }}
-                        </small>
-                      }
-                    </div>
-                  </div>
-                </div>
           <section class="step-content active">
             <div class="step-2-grid">
               <!-- Columna izquierda: formulario jugador -->
@@ -478,7 +421,7 @@
              
               >
                 <i class="pi pi-check"></i>
-                <span>Registrar Equipo</span>
+                <span>Registrar Jugadores</span>
               </button>
             </div>
 

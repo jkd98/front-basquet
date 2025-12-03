@@ -10,23 +10,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
 import { CustomToastComponent } from '../../../shared/components/custom-toast/custom-toast.component';
 import { CustomToastService } from '../../../shared/services/custom-toast.service';
-import { InvitationService } from '../../../shared/services/invitation.service';
-import { TeamService } from '../../../shared/services/team.service';
-import { AuthService } from '../../../auth/services/auth.service';
-
-interface Player {
-  fullName: string;
-  birthDate: Date;
-  age: number;
-  jerseyNumber: number;
-}
+import { PlayerService } from '../../../shared/services/player.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register-team',
@@ -36,7 +27,6 @@ interface Player {
     InputTextModule,
     CalendarModule,
     InputNumberModule,
-    FileUploadModule,
     ButtonModule,
     CardModule,
     CommonModule,
@@ -51,59 +41,77 @@ export default class RegisterTeamPageComponent implements OnInit {
   #customToastService = inject(CustomToastService);
   #route = inject(ActivatedRoute);
   #router = inject(Router);
-  #invitationService = inject(InvitationService);
-  #teamService = inject(TeamService);
-  #authService = inject(AuthService);
+  #playerService = inject(PlayerService);
 
-  today = new Date();
+  teamId: string | null = null;
+  teamName: string | null = null;
+  teamLogo: string | null = null;
+
+  baseUrl = environment.baseUrl;
+
   namePattern = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/;
 
-  invitationCode: string | null = null;
-  isValidInvitation: boolean = false;
-  isLoading: boolean = true;
-  invitationError: string = '';
-
-  // Estado UI
   selectedPlayerIndex: number | null = null;
   captainIndex: number | null = null;
+  isSubmitting = false;
+  isLoadingPlayers = false;
 
   teamForm = this.#fb.group({
-    teamName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
-    availabilityDays: ['', [Validators.required]],
     players: this.#fb.array<FormGroup>([]),
-    teamPhoto: [null as File | null, [Validators.required]],
   });
 
-  teamPhotoPreview: string | null = null;
   playerPhotoPreviews: string[] = [];
 
+  isValidInvitation: boolean = true;
+
   ngOnInit() {
-    if (this.players.length === 0) {
-      this.addPlayer();
+    this.teamId = this.#route.snapshot.queryParamMap.get('teamId');
+    this.teamName = this.#route.snapshot.queryParamMap.get('teamName');
+    this.teamLogo = this.#route.snapshot.queryParamMap.get('teamLogo');
+
+    if (!this.teamId) {
+      this.#customToastService.renderToast(
+        'No se recibió un equipo válido. Regresa a Mis equipos y vuelve a intentarlo.',
+        'error'
+      );
+      this.redirectBasedOnRole();
+      return;
     }
 
     this.players.valueChanges.subscribe(() => {
       this.validateUniqueJerseyNumbers();
     });
-    
+
+    this.loadExistingPlayers();
   }
 
   redirectBasedOnRole() {
-      this.#router.navigate(['/users/my-team']);
+    this.#router.navigate(['/users/my-team']);
   }
 
   // Getters
-  get teamName() {
-    return this.teamForm.get('teamName');
-  }
   get players() {
     return this.teamForm.get('players') as FormArray;
   }
-  get teamPhoto() {
-    return this.teamForm.get('teamPhoto');
+
+  // Helpers 
+  getLogoUrl(logoPath: string | null): string {
+    if (!logoPath) return 'assets/images/default-team-logo.png';
+    return `${this.baseUrl}/public/uploads/${logoPath}`;
   }
 
-  calculateAge(birthDate: Date): number {
+  getInitials(name?: string | null): string {
+    if (!name) return '?';
+    return name
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((p) => p.charAt(0))
+      .join('')
+      .toUpperCase();
+  }
+
+  calculateAge(birthDate: Date | string): number {
     const today = new Date();
     const birth = new Date(birthDate);
     let age = today.getFullYear() - birth.getFullYear();
@@ -125,11 +133,81 @@ export default class RegisterTeamPageComponent implements OnInit {
     return this.players.at(index) as FormGroup;
   }
 
+  // ===== Carga de jugadores =====
+  private loadExistingPlayers() {
+    if (!this.teamId) return;
+
+    this.isLoadingPlayers = true;
+
+    this.#playerService.getPlayersByTeam(this.teamId).subscribe({
+      next: (resp) => {
+        const data = resp.data || [];
+
+        while (this.players.length > 0) {
+          this.players.removeAt(0);
+        }
+        this.playerPhotoPreviews = [];
+
+        if (data.length === 0) {
+          this.addPlayer();
+          this.isLoadingPlayers = false;
+          return;
+        }
+
+        data.forEach((p: any) => {
+          const group = this.#fb.group({
+            id: [p._id || null],
+            fullName: [
+              p.fullname || '',
+              [Validators.required, Validators.pattern(this.namePattern)],
+            ],
+            birthDate: [
+              p.birthday ? new Date(p.birthday) : null,
+              [Validators.required],
+            ],
+            jerseyNumber: [
+              p.jersey ?? null,
+              [Validators.required, Validators.min(1), Validators.max(99)],
+            ],
+            photo: [null as File | null],
+          });
+
+          this.players.push(group);
+
+          if (p.picture) {
+            this.playerPhotoPreviews.push(
+              `${this.baseUrl}/public/uploads/${p.picture}`
+            );
+          } else {
+            this.playerPhotoPreviews.push('');
+          }
+        });
+
+        this.selectedPlayerIndex = this.players.length > 0 ? 0 : null;
+
+        const captainIdx = data.findIndex((p: any) => p.isLider);
+        this.captainIndex = captainIdx >= 0 ? captainIdx : null;
+
+        this.isLoadingPlayers = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar jugadores del equipo', error);
+        this.#customToastService.renderToast(
+          error.error?.msg || 'Error al cargar jugadores del equipo',
+          'error'
+        );
+        if (this.players.length === 0) {
+          this.addPlayer();
+        }
+        this.isLoadingPlayers = false;
+      },
+    });
+  }
+
   cancelRegistration() {
     this.redirectBasedOnRole();
   }
 
-  // ===== Jugadores =====
   onAddPlayerClick() {
     this.addPlayer();
   }
@@ -144,6 +222,7 @@ export default class RegisterTeamPageComponent implements OnInit {
     }
 
     const playerForm = this.#fb.group({
+      id: [null],
       fullName: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       birthDate: [null as Date | null, [Validators.required]],
       jerseyNumber: [
@@ -197,7 +276,6 @@ export default class RegisterTeamPageComponent implements OnInit {
     this.captainIndex = index;
   }
 
-  // ===== Fotos =====
   onPlayerPhotoSelect(event: any, index: number) {
     if (index == null || index < 0 || index >= this.players.length) return;
 
@@ -221,32 +299,6 @@ export default class RegisterTeamPageComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
-  }
-
-  onTeamPhotoSelect(event: any) {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        this.#customToastService.renderToast(
-          'Por favor seleccione una imagen válida',
-          'error'
-        );
-        return;
-      }
-
-      this.teamForm.patchValue({ teamPhoto: file });
-      this.teamForm.get('teamPhoto')?.updateValueAndValidity();
-
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.teamPhotoPreview = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  triggerTeamPhotoInput() {
-    document.getElementById('teamPhotoInput')?.click();
   }
 
   triggerPlayerPhotoInput(index: number) {
@@ -337,82 +389,48 @@ export default class RegisterTeamPageComponent implements OnInit {
       return;
     }
 
-    // Validar que haya capitan
-    if (
-      this.captainIndex === null ||
-      this.captainIndex < 0 ||
-      this.captainIndex >= this.players.length
-    ) {
+    if (!this.teamId) {
       this.#customToastService.renderToast(
-        'Debes seleccionar un capitán para el equipo.',
+        'No se recibió un equipo válido. Regresa a Mis equipos y vuelve a intentarlo.',
         'error'
       );
       return;
     }
 
-    this.submitFormData();
-  }
-
-  private submitFormData() {
-    const formData = this.prepareFormData();
-
-    this.#teamService.createTeam(formData).subscribe({
-      next: () => {
-        this.#customToastService.renderToast(
-          'Equipo registrado exitosamente!',
-          'success'
-        );
-        this.redirectBasedOnRole();
-      },
-      error: (error) => {
-        console.error('Error al registrar equipo:', error);
-        this.#customToastService.renderToast(
-          error.error?.msg || 'Error al registrar el equipo',
-          'error'
-        );
-      },
+    const rawPlayers = this.players.controls.map((control) => {
+      const val = control.value as any;
+      return {
+        id: val.id,
+        fullName: val.fullName,
+        birthDate: val.birthDate,
+        jerseyNumber: val.jerseyNumber,
+        photo: val.photo as File | null,
+      };
     });
-  }
 
-  private prepareFormData(): FormData {
-    const formData = new FormData();
+    this.isSubmitting = true;
 
-    formData.append('name', this.teamForm.get('teamName')?.value || '');
-
-    const availabilityRaw = this.teamForm.get('availabilityDays')?.value || '';
-    const availabilityArray = availabilityRaw
-      .split(',')
-      .map((d: string) => d.trim())
-      .filter((d: string) => d.length > 0);
-
-    formData.append('availabilityDays', JSON.stringify(availabilityArray));
-
-    formData.append('code', this.invitationCode!);
-
-    const teamPhoto = this.teamForm.get('teamPhoto')?.value;
-    if (teamPhoto) {
-      formData.append('logo', teamPhoto);
-    }
-
-    // jugadores
-    const playersData: any[] = [];
-
-    this.players.controls.forEach((control, index) => {
-      const val = control.value;
-      playersData.push({
-        fullname: val.fullName,
-        birthday: val.birthDate,
-        jersey: val.jerseyNumber,
-        picture: '',
-        isLider: index === this.captainIndex,
+    this.#playerService
+      .createPlayersForTeam(this.teamId, rawPlayers)
+      .subscribe({
+        next: () => {
+          this.#customToastService.renderToast(
+            'Jugadores guardados correctamente',
+            'success'
+          );
+          this.isSubmitting = false;
+          this.redirectBasedOnRole();
+        },
+        error: (error) => {
+          console.error('Error al guardar jugadores:', error);
+          this.#customToastService.renderToast(
+            error.error?.msg || 'Error al guardar jugadores',
+            'error'
+          );
+          this.isSubmitting = false;
+        },
       });
-    });
-
-    formData.append('players', JSON.stringify(playersData));
-
-    return formData;
   }
-
 
   isFieldInvalid(fieldName: string, formGroup?: FormGroup): boolean {
     const control = formGroup ? formGroup.get(fieldName) : this.teamForm.get(fieldName);
