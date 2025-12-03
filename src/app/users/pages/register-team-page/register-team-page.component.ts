@@ -1,11 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
@@ -20,6 +14,15 @@ import { CustomToastService } from '../../../shared/services/custom-toast.servic
 import { InvitationService } from '../../../shared/services/invitation.service';
 import { TeamService } from '../../../shared/services/team.service';
 import { AuthService } from '../../../auth/services/auth.service';
+import { MultiSelectModule } from 'primeng/multiselect';
+
+// Interfaz para declarar los días disponibles
+interface dayAvality {
+  id: number,
+  name: string,
+  abbreviation: string,
+  value: string
+}
 
 interface Player {
   fullName: string;
@@ -42,6 +45,8 @@ interface Player {
     CommonModule,
     MessageModule,
     CustomToastComponent,
+    FormsModule,
+    MultiSelectModule
   ],
   templateUrl: './register-team-page.component.html',
   styleUrl: './register-team-page.component.css',
@@ -76,6 +81,9 @@ export default class RegisterTeamPageComponent implements OnInit {
 
   teamPhotoPreview: string | null = null;
   playerPhotoPreviews: string[] = [];
+  //  Se inicializan las variables para el selector de DAYS
+  day!: dayAvality[];
+  selectedDays: dayAvality[] = [];
 
   ngOnInit() {
     if (this.players.length === 0) {
@@ -85,12 +93,49 @@ export default class RegisterTeamPageComponent implements OnInit {
     this.players.valueChanges.subscribe(() => {
       this.validateUniqueJerseyNumbers();
     });
-    
+
+    // * Se asignan los dias a DAY de la interfaz
+    this.day = [
+      { id: 1, name: 'Lunes', abbreviation: 'LUN', value: 'monday' },
+      { id: 2, name: 'Martes', abbreviation: 'MAR', value: 'tuesday' },
+      { id: 3, name: 'Miércoles', abbreviation: 'MIE', value: 'wednesday' },
+      { id: 4, name: 'Jueves', abbreviation: 'JUE', value: 'thursday' },
+      { id: 5, name: 'Viernes', abbreviation: 'VIE', value: 'friday' },
+      { id: 6, name: 'Sábado', abbreviation: 'SAB', value: 'saturday' },
+      { id: 7, name: 'Domingo', abbreviation: 'DOM', value: 'sunday' }
+    ];
+  }
+
+  ///#region fn_SelectorTheDays
+  /*
+   * Nombre: Jesús Yael Padrón Grimaldo
+   * Descripción: Aqui van las funciones para el formulario de selección de dias
+   */
+
+  isDaySelected(day: any): boolean {
+    return this.selectedDays.some(d => d.id === day.id);
+  }
+
+  toggleDaySelection(day: any): void {
+    if (this.isDaySelected(day)) {
+      this.selectedDays = this.selectedDays.filter(d => d.id !== day.id);
+    } else {
+      this.selectedDays = [...this.selectedDays, day];
+    }
+  }
+
+  removeDay(day: any): void {
+    this.selectedDays = this.selectedDays.filter(d => d.id !== day.id);
+  }
+
+  clearAllDays(): void {
+    this.selectedDays = [];
   }
 
   redirectBasedOnRole() {
-      this.#router.navigate(['/users/my-team']);
+    this.#router.navigate(['/users/my-team']);
   }
+  ///#endregion fn_SelectorTheDays
 
   // Getters
   get teamName() {

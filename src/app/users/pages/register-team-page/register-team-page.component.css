@@ -15,6 +15,299 @@
   max-width: 1100px;
 }
 
+
+.card-select-days {
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 55%),rgba(18, 4, 42, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2rem;
+  border-radius: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+ 
+/* CONTENEDOR DEL SELECTOR */
+.selector-css {
+  max-width: max-content;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0.4rem;
+  display: flex;
+  gap: 0.3rem;
+}
+
+/* ESTILOS DE LOS BOTONES DEL SELECTOR */
+.selector-css button {
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.6rem;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--fuente-principal);
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.selector-css button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.selector-css button.active {
+  background: rgba(250, 85, 34, 0.2);
+  color: var(--secondary);
+  font-weight: 600;
+  box-shadow: 0 0 0 1px rgba(250, 85, 34, 0.4);
+}
+
+.selector-css button.active:hover {
+  background: rgba(250, 85, 34, 0.25);
+}
+
+/* AQUI INICIAN LAS CLASES DEL SELECTOR */
+.card-select-days {
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 55%),
+    rgba(18, 4, 42, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2.4rem;
+  border-radius: 1.2rem;
+  margin-bottom: 1.6rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* CONTENEDOR DEL SELECTOR DE DÍAS */
+.days-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+/* HEADER DEL SELECTOR */
+.selector-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  font-family: var(--fuente-heading);
+  font-size: 1.6rem;
+}
+
+.selector-header i {
+  color: var(--secondary);
+  font-size: 1.8rem;
+}
+
+.selected-count {
+  margin-left: auto;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--fuente-principal);
+}
+
+/* GRID DE DÍAS */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .days-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .days-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* OPCIÓN DE DÍA */
+.day-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.day-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.day-option.selected {
+  background: rgba(250, 85, 34, 0.15);
+  border-color: var(--secondary);
+  box-shadow: 0 4px 12px rgba(250, 85, 34, 0.2);
+}
+
+/* CHECKBOX PERSONALIZADO */
+.day-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.day-option.selected .day-checkbox {
+  background: var(--secondary);
+  border-color: var(--secondary);
+}
+
+.day-checkbox i {
+  color: white;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.day-option.selected .day-checkbox i {
+  opacity: 1;
+}
+
+/* TEXTO DEL DÍA */
+.day-name {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.day-option.selected .day-name {
+  color: white;
+  font-weight: 600;
+}
+
+.day-abbr {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  min-width: 36px;
+  text-align: center;
+}
+
+.day-option.selected .day-abbr {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* FOOTER DEL SELECTOR */
+.selector-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.selected-days-preview {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.preview-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.3rem;
+  white-space: nowrap;
+}
+
+.selected-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.selected-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(250, 85, 34, 0.2);
+  color: var(--secondary);
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 1.3rem;
+  border: 1px solid rgba(250, 85, 34, 0.4);
+}
+
+.remove-chip {
+  background: none;
+  border: none;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.remove-chip:hover {
+  opacity: 1;
+}
+
+.remove-chip i {
+  font-size: 1rem;
+}
+
+/* BOTÓN LIMPIAR TODO */
+.clear-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 77, 77, 0.1);
+  border: 1px solid rgba(255, 77, 77, 0.4);
+  color: #ff7777;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.6rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.clear-all-btn:hover {
+  background: rgba(255, 77, 77, 0.2);
+  transform: translateY(-1px);
+}
+
+.clear-all-btn i {
+  font-size: 1.2rem;
+}
+
+/* AQUI TERMINAN LAS CLASES DEL SELECTOR */
+
 /* CARD PRINCIPAL DEL WIZARD */
 .wizard-card {
   background: rgba(6, 2, 22, 0.96);
