@@ -119,7 +119,7 @@ export class SeasonDetailComponent {
                 const code = response.data.code;
                 // Assuming the registration page is at /users/register-team
                 // and accepts a query param 'code'
-                this.generatedLink = `${window.location.origin}/users/register-team?code=${code}`;
+                this.generatedLink = `${code}`;
                 this.customToastService.renderToast('Invitación generada correctamente', 'success');
                 this.loadInvitations();
             },
