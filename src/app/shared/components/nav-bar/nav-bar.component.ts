@@ -48,7 +48,7 @@ export class NavBarComponent implements OnInit {
       links = [
         {
           label: 'Inicio',
-          path: '/users/home'
+          path: '/users/home',
         },
         {
           label: 'Panel',
@@ -64,6 +64,20 @@ export class NavBarComponent implements OnInit {
         },
       ]
     }
+
+    if(role === 'Coach') {
+      links = [
+        {
+          label: 'Inicio',
+          path: '/users/home',
+        },
+        {
+          label: 'Mis Equipos',
+          path: '/users/my-team'
+        }
+      ]
+    }
+
     this.navItems = links;
 
     /* if (role === '4DMlN') {
