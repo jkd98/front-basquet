@@ -49,4 +49,14 @@ export class TeamService {
             { headers: this.getHeaders() }
         );
     }
+
+    addTeamToSeason(teamId: string, code: string): Observable<ApiResponse<any>> {
+        const body = { teamId, code };
+
+        return this.http.post<ApiResponse<any>>(
+        `${this.baseUrl}/season`,
+        body,
+        { headers: this.getHeaders() }
+        );
+    }
 }

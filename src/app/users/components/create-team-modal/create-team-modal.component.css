@@ -1,0 +1,314 @@
+.team-modal-wrapper {
+  padding: 0.4rem 0.2rem 0.6rem;
+}
+
+/* HEADER */
+.form__heading {
+  font-family: var(--fuente-heading);
+  color: var(--white);
+  text-align: left;
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.03em;
+}
+
+@media (min-width: 768px) {
+  .form__heading {
+    font-size: 2.2rem;
+  }
+}
+
+.wizard-subtitle {
+  margin-top: 0.4rem;
+  margin-bottom: 1.4rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.3rem;
+}
+
+.wizard-header-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* GRID CABECERA EQUIPO */
+.team-header-grid {
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr) auto;
+  gap: 1.4rem;
+  align-items: flex-end;
+}
+
+.team-name-field {
+  max-width: 50rem;
+}
+
+.team-logo-field {
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+@media (max-width: 768px) {
+  .team-header-grid {
+    grid-template-columns: 1fr;
+    align-items: flex-end;
+  }
+
+  .team-logo-field {
+    justify-self: flex-end;
+    align-items: flex-end;
+  }
+}
+
+/* CAMPOS GENERALES */
+.form__campo {
+  margin-bottom: 1.6rem;
+}
+
+.form__campo:last-child {
+  margin-bottom: 0;
+}
+
+.label-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form__campo label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+  color: var(--white);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.form__campo label i {
+  color: var(--secondary);
+}
+
+.form__campo input {
+  width: 100%;
+  height: 4.2rem;
+  padding: 0 1.3rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.7rem;
+  color: var(--white);
+  font-family: var(--fuente-principal);
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
+}
+
+.form__campo input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--secondary);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(250, 85, 34, 0.3);
+}
+
+.form__campo input.ng-invalid.ng-touched {
+  border-color: #ff4d4d;
+}
+
+/* UPLOAD LOGO */
+.photo-upload-box {
+  width: 100%;
+  height: 190px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 0.9rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.team-logo-field .photo-upload-box--compact {
+  width: 110px;
+  height: 110px;
+  max-width: 110px;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.photo-upload-box.has-image {
+  border-style: solid;
+}
+
+.photo-upload-box:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--secondary);
+}
+
+.photo-upload-box.error {
+  border-color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.08);
+}
+
+.photo-upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-upload-box .placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.photo-upload-box .placeholder i {
+  font-size: 3rem;
+}
+
+.photo-upload-box .placeholder span {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.photo-upload-box .placeholder small {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.photo-upload-box .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7),
+    rgba(12, 0, 32, 0.9)
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  opacity: 0;
+  color: white;
+  transition: opacity 0.25s ease;
+}
+
+.photo-upload-box:hover .overlay {
+  opacity: 1;
+}
+
+.photo-upload-box .overlay i {
+  font-size: 2.5rem;
+}
+
+/* ERRORES */
+.error-message {
+  margin-top: 0.4rem;
+  color: #ff4d4d;
+  font-size: 1.2rem;
+}
+
+/* BOTONES */
+.wizard-step-actions {
+  margin-top: 2.2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border-radius: 0.8rem;
+  padding: 1rem 1.6rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--secondary), #e64a19);
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(250, 85, 34, 0.45);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px rgba(250, 85, 34, 0.6);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: var(--white);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.days-multiselect.p-multiselect {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.7rem;
+  color: var(--white);
+}
+
+.days-multiselect .p-multiselect-label-container {
+  padding: 0.2rem 0.6rem;
+  min-height: 4.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.days-multiselect .p-multiselect-label {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  white-space: normal;
+}
+
+.days-multiselect .p-multiselect-label.p-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.days-multiselect .p-multiselect-token {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 999px;
+  color: #f9fafb;
+  padding: 0.1rem 0.7rem;
+  font-size: 1.2rem;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.days-multiselect.ng-invalid.ng-touched {
+  border-color: #ff4d4d;
+}

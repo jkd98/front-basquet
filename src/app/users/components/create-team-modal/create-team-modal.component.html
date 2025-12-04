@@ -1,0 +1,131 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  [style]="{ width: '700px', maxWidth: '95vw' }"
+  [styleClass]="'team-dialog'"
+  [maskStyleClass]="'team-dialog-mask'"
+  (onHide)="onDialogHide()"
+>
+  <div class="team-modal-wrapper">
+    <div class="wizard-header-top">
+      <h2 class="form__heading">Crear Equipo</h2>
+      <p class="wizard-subtitle">
+        Define el nombre del equipo, sus días disponibles y su logo.
+      </p>
+    </div>
+
+    <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="team-header-grid">
+        <!-- Nombre del equipo -->
+        <div class="form__campo team-name-field">
+          <label for="teamName">
+            <span class="label-icon"><i class="pi pi-tag"></i></span>
+            <span>Nombre del Equipo *</span>
+          </label>
+          <input
+            id="teamName"
+            type="text"
+            formControlName="teamName"
+            [class.ng-invalid]="isFieldInvalid('teamName')"
+            placeholder="Ej: Guerreros del Norte"
+          />
+          @if (isFieldInvalid('teamName')) {
+            <small class="error-message">
+              {{ getFieldError('teamName') }}
+            </small>
+          }
+        </div>
+
+        <!-- Días disponibles -->
+        <div class="form__campo team-name-field">
+        <label for="availabilityDays">
+            <span class="label-icon"><i class="pi pi-calendar"></i></span>
+            <span>Día(s) disponibles *</span>
+        </label>
+
+        <p-multiSelect
+            id="availabilityDays"
+            formControlName="availabilityDays"
+            [options]="daysOfWeek"
+            optionLabel="label"
+            optionValue="value"  
+            display="chip"
+            [maxSelectedLabels]="7" 
+            defaultLabel="Selecciona día(s)"
+            styleClass="days-multiselect"
+            panelStyleClass="days-multiselect-panel"
+            [class.ng-invalid]="isFieldInvalid('availabilityDays')"
+        ></p-multiSelect>
+
+        @if (isFieldInvalid('availabilityDays')) {
+            <small class="error-message">
+            {{ getFieldError('availabilityDays') }}
+            </small>
+        }
+        </div>
+
+
+        <!-- Logo del equipo -->
+        <div class="form__campo team-logo-field">
+          <label>
+            <span class="label-icon"><i class="pi pi-image"></i></span>
+            <span>Logo del Equipo *</span>
+          </label>
+
+          <input
+            type="file"
+            id="teamPhotoInput"
+            (change)="onTeamPhotoSelect($event)"
+            accept="image/*"
+            hidden
+          />
+
+          <div
+            class="photo-upload-box photo-upload-box--compact"
+            [class.has-image]="teamPhotoPreview"
+            [class.error]="isFieldInvalid('teamPhoto')"
+            (click)="triggerTeamPhotoInput()"
+          >
+            @if (teamPhotoPreview) {
+              <img [src]="teamPhotoPreview" alt="Vista previa" />
+              <div class="overlay">
+                <i class="pi pi-pencil"></i>
+                <span>Cambiar logo</span>
+              </div>
+            } @else {
+              <div class="placeholder">
+                <i class="pi pi-camera"></i>
+                <span>Añadir logo</span>
+                <small>PNG o JPG</small>
+              </div>
+            }
+          </div>
+
+          @if (isFieldInvalid('teamPhoto')) {
+            <small class="error-message">
+              {{ getFieldError('teamPhoto') }}
+            </small>
+          }
+        </div>
+      </div>
+
+      <div class="wizard-step-actions modal-actions">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="onCancelClick()"
+        >
+          <i class="pi pi-times"></i>
+          <span>Cancelar</span>
+        </button>
+
+        <button type="submit" class="btn-primary">
+          <i class="pi pi-check"></i>
+          <span>Crear Equipo</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>

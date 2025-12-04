@@ -2,15 +2,17 @@
   <!-- Header -->
   <div class="page-header">
     <div class="titles">
-      <h1>Mis equipos</h1>
+      <h2>Mis equipos</h2>
       <p>Consulta tus equipos registrados y su plantilla de jugadores.</p>
     </div>
 
     <button
       type="button"
       class="btn"
-      routerLink="/users/register-team"
-    >Registrar equipo</button>
+      (click)="openCreateTeamModal()"
+    >
+      Registrar equipo
+    </button>
   </div>
 
   <!-- Loading -->
@@ -36,9 +38,8 @@
         class="team-card"
         *ngFor="let t of teams"
         [class.expanded]="expandedTeamId === t._id"
-        (click)="onToggleTeam(t)"
       >
-        <div class="team-card-main">
+        <div class="team-card-main" (click)="onToggleTeam(t)">
           <div class="team-card-logo">
             <ng-container *ngIf="t.logo; else logoFallback">
               <img [src]="getLogoUrl(t.logo)" [alt]="t.name" />
@@ -64,14 +65,24 @@
             </div>
           </div>
 
-          <button
-            *ngIf="expandedTeamId === t._id"
-            type="button"
-            class="collapse-btn"
-            (click)="collapseTeam($event)"
-            pButton
-            icon="pi pi-times"
-          ></button>
+          <div class="team-card-actions" (click)="$event.stopPropagation()">
+            <button
+              type="button"
+              class="team-menu-btn"
+              pButton
+              icon="pi pi-ellipsis-v"
+              (click)="onMenuButtonClick($event, t, teamMenu)"
+            ></button>
+
+            <button
+              *ngIf="expandedTeamId === t._id"
+              type="button"
+              class="collapse-btn"
+              pButton
+              icon="pi pi-times"
+              (click)="collapseTeam($event)"
+            ></button>
+          </div>
         </div>
 
         <div class="team-card-players" *ngIf="expandedTeamId === t._id">
@@ -96,6 +107,21 @@
           >
             <i class="pi pi-info-circle"></i>
             <p>Este equipo aún no tiene jugadores registrados.</p>
+
+            <button
+              type="button"
+              class="register-players-btn"
+              [routerLink]="['/users/register-team']"
+              [queryParams]="{
+                teamId: t._id,
+                teamName: t.name,
+                teamLogo: t.logo
+              }"
+              (click)="$event.stopPropagation()"
+            >
+              <i class="pi pi-user-plus"></i>
+              <span>Registrar jugadores</span>
+            </button>
           </div>
 
           <div
@@ -158,7 +184,27 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </div> 
+    </div> 
+
+    <p-menu
+      #teamMenu
+      [popup]="true"
+      [model]="teamMenuItems"
+      [appendTo]="'body'"
+      styleClass="team-menu-panel"
+    ></p-menu>
+  </div> 
+
+  <app-create-team-modal
+    [(visible)]="createTeamVisible"
+    (createTeam)="onCreateTeam($event)"
+  ></app-create-team-modal>
+
+  <app-join-season-modal
+    [(visible)]="joinSeasonVisible"
+    [teamId]="joinSeasonTeamId"
+    [teamName]="joinSeasonTeamName"
+    (joinedSeason)="onJoinedSeason()"
+  ></app-join-season-modal>
 </div>
